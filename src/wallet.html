@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/@solana/web3.js/lib/index.iife.js"></script>
+<script src="https://bundle.run/buffer@6.0.3"></script>
+
+</head>
+<body onload="setVal();">
+
+<div class=pad>
+
+<ul class="main"><li>File <div class=drop>
+  <ul class="submenu">
+    <li id=new>New</li>
+    <li id=open><input type="file" id="fileInp"></input>Open</li>
+    <li id=save class=disable>Save</li>
+    <li id=exit>Exit</li></ul>
+  </div></li>
+
+  <li>View <div class="drop">
+  <ul class="submenu" style="left:2%;">
+    <li id=bal>Balance</li>
+    <li id=tok>Tokens</li>
+    <li id=tok2>Nested Tokens</li>
+    <li id=gecko>tokenVal</li>
+    <li id=geckoII>solanaVal</li>
+    <li id=rent>rentVals</li>
+    <li id=tok3>Token meta</li>
+    <li id=tok4>Token meta Old</li>
+    <li id=tok5>Tiny meta</li>
+  </ul>
+</div></li>
+<li>Msg <div class="drop">
+  <ul class="submenu" style="left:4%;">
+    <li id=memo>Test</li>
+    <li id=send>Transfer with memo</li>
+  </ul>
+</div></li>
+
+<li>Convert <div class="drop">
+  <ul class="submenu" style="left:6%;">
+    <li id=s2u>Sol to usd</li>
+    <li id=u2s>usd to Sol</li>
+    <li id=rMa>microAccount rent</li>
+    <li id=rMb>microAccount rent II</li>
+    <li id=rMc>microAccount rent III</li>
+  </ul>
+</div></li>
+
+<li>Extra <div class="drop">
+  <ul class="submenu" style="left:8%;">
+    <li id=newX>Create Acc</li>
+    <li id=burnX class=disable>Burn Tokens</li>
+    <li id=closeX>Close Acc</li>
+    <li id=closeZ>Nested Account Recovery</li>
+    <li id=viewX>Pubkey viewer</li>
+    <li id=nestX class=disable>nested transfer</li>
+  </ul>
+</div></li>
+
+<li>Extra II <div class="drop">
+  <ul class="submenu" style="left:10%;">
+    <li id=appX>Approve</li>
+    <li id=revX>Revoke</li>
+    <li id=authX>SetAuth Mint</li>
+    <li id=authY>SetAuth Account</li>
+  </ul>
+</div></li>
+
+
+<li id=Newlogin> Sig1 </li>
+
+<li>Sig II <div class="drop">
+  <ul class="submenu" style="left:20%;">
+    <li id=mint1>load Mint key</li>
+    <li id=mint2>load Mint Auth key</li>
+    <li id=mint3>Init Mint account</li>
+    <li id=mint4>MintTo</li>
+  </ul>
+</div></li>
+
+<li>token22 <div class="drop">
+  <ul class="submenu" style="left:25%;">
+    <li id=prog1> use token1 key</li>
+    <li id=prog22> use token22 key</li>
+  </ul>
+</div></li>
+
+<li>tx <div class="drop">
+  <ul class="submenu" style="left:35%;">
+    <li id=txread> recent tx </li>
+  </ul>
+</div></li>
+
+
+<li id=xMeta>tinyMeta</li>
+
+<li id=xMarket>tinyMarket v0</li>
+
+</ul>
+
+<select id=Currency_sel class=float_R2 oninput="setVal(this);">
+<option> gbp</option>
+<option> eur</option>
+<option> usd</option>
+<option> cad</option>
+<option> aud</option>
+<option> nzd</option>
+<option> cny</option>
+<option> inr</option>
+<option> rub</option>
+<option> jpy</option>
+<option> sats</option>
+</select>
+
+</div><br>
+
+<div id=pubkey class=block>
+Key data:
+</div>
+<br>
+<div id=main class=block>
+Token data:
+</div>
+
+<div id=xcons class="block float_R">
+Log data:
+</div><br>
+
+<div id=xsend class=block>
+Transfer data:
+</div>
+
+
+<div id=popup class=hide><br>
+<div id=login class=inline><table border="1px solid #000"><!--tr><td></td><td></td></tr>-->
+<tr><td>ID:</td><td><input type=text id=idbox></input></td></tr>
+<tr><td>username:</td><td><input type=text id=usrbox></input></td></tr>
+<tr><td>pass:</td><td><input type=password id=passbox onclick="passToggle(this);"></input></td></tr>
+<tr><td></td><td><input type=button value="Login" onclick=test_Login();></input></td></tr></table>
+</div>
+
+<input type=button value='Decrypt key' class=buttons onclick=cryptLogin();></input>
+<input type=button value='New key' class=buttons onclick=cryptGen();></input>
+<input type=button value='Seed key' class=buttons onclick=seedLogin(hshKey);></input>
+<input type=button value='Online key' class=buttons disabled></input>
+<input type=button value='Sig key' class=buttons onclick=initSig();></input>
+
+</div>
+
+
+<div id=popup2 class=hide><br>
+tinymeta<br>
+standard data: name | symbol | image [txMemo #1] (Allows arbitrary addresses?)<br>
+Id data: mint | tx | metadata-flag  [txMemo #2] (Sigkey address [v0])<br>
+<table><tr><td></td><td></td></tr>
+<tr><td>name:   </td><td><input id=metaN></input></td></tr>
+<tr><td>symbol: </td><td><input id=metaS></input></td></tr>
+<tr><td>image: </td><td><input id=metaI></input></td></tr>
+<tr><td>mint: </td><td><input id=metaM></input></td></tr>
+</table>
+<input type=button value='Generate Meta' onclick=create_Meta();></input>
+</div>
+
+<script src="wallet.js"></script>
+<script src="accessPoint.js"></script>
+<script src="token.js"></script>
+<script src="tab.js"></script>
+
+<script src="mixedKey.js"></script>
+<script src="fetchMeta.js"></script>
+<script src="fetchMeta2.js"></script>
+<script src="genMint.js"></script>
+
+<script src="setAuth.js"></script>
+<script src="tinyMarket.js"></script>
+<script src="txhist.js"></script>
+<script src="account.js"></script>
+</body>
+</html>
+
