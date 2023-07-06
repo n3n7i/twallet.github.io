@@ -1,0 +1,1 @@
+var xloc = "https://side-young-mountain.solana-mainnet.discover.quiknode.pro/cf23f5a294367ce0cf1b89a1a34d9c00039e069a/"
