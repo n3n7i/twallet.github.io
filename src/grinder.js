@@ -1,4 +1,14 @@
 
+function batchKeys(n=1000){
+  var k1 = [];
+  var k2 = [];
+  for (var i=0;i<n;i++){
+    var kx = sol.Keypair.generate();
+    k1.push(kx);
+    k2.push(kx.publicKey);
+    }
+  return [k1,k2];
+  }
 
 function vanity_keygrind(keys, s_str){
 
