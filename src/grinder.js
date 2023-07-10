@@ -1,5 +1,5 @@
 
-function batchKeys(n=1000){
+function batchKeys(n=10000){
   var k1 = [];
   var k2 = [];
   for (var i=0;i<n;i++){
@@ -22,7 +22,12 @@ function vanity_keygrind(keys, s_str){
   if (id>-1){
     console.log('Found an occurance');
     var xcount = xstr.slice(0,id + s_str.length).split('-').length;
-    return xcount;
-  
+    return xcount-1;
     }
   }
+
+/*
+generate 100,000 keys: ~37 sec [batch()]
+
+search 100,000 keys: ~1.7 sec [grind()]
+*/
