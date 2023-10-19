@@ -304,7 +304,7 @@ function marketData(x){
 
   xcheck += "<small>(use currency-pair amount for buy value if unchecked)</small><br>";
 
-  xcheck += "Use ExactOut for sell: <input type=checkbox name='sellExact' value='allow ExactOut' /><br>";
+  xcheck += "Use ExactOut for sell: <input type=checkbox name='sellExact' value='allow ExactOut' disabled /><br>";
 
   xcheck += "<small>(use currency-pair amount for sell value if checked)</small><br></small>";
 
