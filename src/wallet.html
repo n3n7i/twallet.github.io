@@ -16,6 +16,7 @@
     <li id=new>New</li>
     <li id=open><input type="file" id="fileInp"></input>Open</li>
     <li id=save class=disable>Save</li>
+    <li id=save2>Read adxlist</li>
     <li id=exit>Exit</li></ul>
   </div></li>
 
@@ -35,6 +36,8 @@
 <li>Msg <div class="drop">
   <ul class="submenu" style="left:4%;">
     <li id=memo>Test</li>
+    <li id=xSnap>Create Snapshot</li>
+    <li id=xSnap2>view Snapshot </li>
     <li id=send>Transfer with memo</li>
   </ul>
 </div></li>
@@ -57,6 +60,7 @@
     <li id=closeZ>Nested Account Recovery</li>
     <li id=viewX>Pubkey viewer</li>
     <li id=nestX class=disable>nested transfer</li>
+    <li id=nestZ>Create hidden Account</li>
   </ul>
 </div></li>
 
@@ -91,6 +95,10 @@
 <li>tx <div class="drop">
   <ul class="submenu" style="left:35%;">
     <li id=txread> recent tx </li>
+    <li id=txclear> clear tx </li>
+    <li id=txkeys> All tx keys </li>
+    <li id=txdrop> Airdrop to adx </li>
+    
   </ul>
 </div></li>
 
@@ -98,6 +106,17 @@
 <li id=xMeta>tinyMeta</li>
 
 <li id=xMarket>tinyMarket v0</li>
+
+
+<li> jupMarket <div class="drop">
+  <ul class="submenu" style="left:60%;">
+    <li id=jpread> read jupiter tokendata [strict] </li>
+    <li id=jpread3> read jupiter tokendata [extra] </li>
+    <li id=jpread2> jupiter prices [strict] </li>
+    <li id=jpread4> hide market </li>
+
+  </ul>
+</div></li>
 
 </ul>
 
@@ -164,6 +183,11 @@ Id data: mint | tx | metadata-flag  [txMemo #2] (Sigkey address [v0])<br>
 <input type=button value='Generate Meta' onclick=create_Meta();></input>
 </div>
 
+<br>
+<div id=popup3 class="block hide">
+jupiter market:<br>
+</div>
+
 <script src="wallet.js"></script>
 <script src="accessPoint.js"></script>
 <script src="token.js"></script>
@@ -178,7 +202,12 @@ Id data: mint | tx | metadata-flag  [txMemo #2] (Sigkey address [v0])<br>
 <script src="tinyMarket.js"></script>
 <script src="txhist.js"></script>
 <script src="account.js"></script>
-<script src="grinder.js"></script>
+
+<script src="solpay.js"></script>
+<script src="snap.js"></script>
+
+<script src="jupMarket.js"></script>
+<script src="xplot.js"></script>
 </body>
 </html>
 

@@ -234,6 +234,36 @@ async function menuHandler(){
 
     }
 
+  if (menuid == "jpread"){
+
+    dataInit_jup();
+
+    }
+
+  if (menuid == "jpread3"){
+
+    dataInit_jup(true);
+
+    }
+
+
+  if (menuid == "jpread2"){
+
+    matchToken();
+
+    dataReq_jup_prices();
+
+    }
+
+  if (menuid == "jpread4"){
+
+    popup3.classList.add("hide");
+
+    }
+
+
+
+
   if (menuid == "tok2"){
  
     if (lastReq == "tok"){
@@ -348,6 +378,8 @@ async function menuHandler(){
 
       for(var i=0;i<n;i++){
 
+        if(geckodata[i])
+
         if(!geckodata[i].data.error){
 
           var j = geckodata[i].id;
@@ -356,7 +388,10 @@ async function menuHandler(){
 
           xcons.log("$¤ " + (geckodata[i].data.prices[0][1] * wallet_Tok[j].amount).toFixed(3));
 
-          tokenBal += (geckodata[i].data.prices[0][1] * wallet_Tok[j].amount);}
+          tokenBal += (geckodata[i].data.prices[0][1] * wallet_Tok[j].amount);
+
+	  xcons.log("$" + tokenBal);
+	  }
 
         }
 
@@ -398,6 +433,31 @@ async function menuHandler(){
     res3.then((resp) => xcons.log(resp));
 
     }
+
+  if (menuid == "xSnap"){
+
+    var r1 = gen_Snap();
+
+    if (r1.length > 0){
+
+      res3 = put_Snap(JSON.stringify(r1));
+
+      res3.then((resp) => xcons.log(resp));
+
+      }
+
+    }
+
+
+  if (menuid == "xSnap2"){
+
+    var r1 = await snap_sig();
+
+    if (r1>-1) fetch_Snap(r1);
+
+    }
+
+
 
   if (menuid == "viewX"){
 
@@ -686,7 +746,7 @@ async function menuHandler(){
 
     }
 
-  if(menuid=="txclear") clearTx();
+  if(menuid=="txclear") { clearTx(); s_hist=[];}
 
   if(menuid=="txkeys") {
 
@@ -1028,9 +1088,10 @@ function saveData2(xdata, label){
 
 var wallet_Tok;
 
-function token(id, amount){
+function token(id, amount, dec){
   this.id = id;
   this.amount = amount;
+  this.decimals = dec;
   }
 
 function getRes(r, xClear=true){
@@ -1039,12 +1100,58 @@ function getRes(r, xClear=true){
 
   var lamptot = 0;
 
+  var mode2 = false;
+
+  if (jupstrict.length>0)
+    mode2=true;
+
+  if (mode2 == false){
+
   var n = r.value.length;
   var Xstr = "<table border='1px #0009'>";
   var zstr = "<tr><td>Account key</td><td>Mint address</td><td>Lamports</td><td>dec</td><td>Amount</td><td></td></tr>";
   for (var i=0; i<n; i++){
 
     zstr += "<tr><td>";
+    zstr = zstr + r.value[i].pubkey.toBase58().slice(0,8) + "</td><td>";
+    zstr = zstr + r.value[i].account.data.parsed.info.mint.slice(0,8) + "</td><td>";
+    zstr = zstr + r.value[i].account.lamports + "</td><td>";
+    zstr = zstr + r.value[i].account.data.parsed.info.tokenAmount.decimals + "</td><td>";
+    zstr = zstr + r.value[i].account.data.parsed.info.tokenAmount.uiAmount + "</td><td>"; //"</td></tr>";
+
+    zstr += "<input id='" +"button_"+i+"' type=button value='>'";
+    zstr += "data-mintid='"+ r.value[i].account.data.parsed.info.mint+"' ";
+
+    zstr += "data-dec='"+ r.value[i].account.data.parsed.info.tokenAmount.decimals+"' ";
+
+    zstr += "data-acc='"+ r.value[i].pubkey +"' "; 
+
+    zstr += "data-amount='"+ r.value[i].account.data.parsed.info.tokenAmount.amount +"' "; 
+
+    zstr += "onclick='token_Transfer(this);'></input></td></tr>";
+
+    var val = r.value[i].account.data.parsed.info.tokenAmount.amount / (10**r.value[i].account.data.parsed.info.tokenAmount.decimals);
+
+    lamptot += r.value[i].account.lamports;
+
+    if (r.value[i].account.data.parsed.info.tokenAmount.decimals > 0)
+      wallet_Tok.push(new token(r.value[i].account.data.parsed.info.mint, val, r.value[i].account.data.parsed.info.tokenAmount.decimals));
+    }
+  Xstr = Xstr + zstr;
+  Xstr = Xstr + "</table>";
+
+  }
+
+
+  if (mode2==true){
+
+  var n = r.value.length;
+  var Xstr = "<table border='1px #0009'>";
+  var zstr = "<tr><td>icon</td><td>Account key</td><td>Mint address</td><td>Lamports</td><td>dec</td><td>Amount</td><td></td></tr>";
+  for (var i=0; i<n; i++){
+
+    zstr += "<tr><td>";
+    zstr = zstr + "</td><td>"
     zstr = zstr + r.value[i].pubkey.toBase58() + "</td><td>";
     zstr = zstr + r.value[i].account.data.parsed.info.mint + "</td><td>";
     zstr = zstr + r.value[i].account.lamports + "</td><td>";
@@ -1067,11 +1174,12 @@ function getRes(r, xClear=true){
     lamptot += r.value[i].account.lamports;
 
     if (r.value[i].account.data.parsed.info.tokenAmount.decimals > 0)
-      wallet_Tok.push(new token(r.value[i].account.data.parsed.info.mint, val));
+      wallet_Tok.push(new token(r.value[i].account.data.parsed.info.mint, val, r.value[i].account.data.parsed.info.tokenAmount.decimals));
     }
   Xstr = Xstr + zstr;
   Xstr = Xstr + "</table>";
 
+  }
 
   if(xClear) xmain.log(Xstr);
   if(!xClear) xmain.innerHTML += "<p>"+Xstr;
@@ -1129,7 +1237,7 @@ async function logMemo(message) {
     // 3. Send Transaction
     let result = await sol.sendAndConfirmTransaction(con, tx, [fromKeypair]);
     // 4. Log Tx URL
-    console.log("complete: ", `https://explorer.solana.com/tx/${result}?cluster=devnet`);
+    console.log("complete: ", `https://explorer.solana.com/tx/${result}`);
     return result;
 }
 
@@ -1432,4 +1540,34 @@ async function tokenCreateAccount(id){
 
 xcons.log("Wallet ready");
 
+
+
+function timedInt(){
+
+  console.log("Tick");
+
+  dataReq_jup_price_X(targ);
+
+  clearCanv();
+
+  draw(tickRes_pc);
+
+  }
+
+
+var minuteTimer;// = setInterval(timedInt, 3600);
+
+var targ = "SOL";
+
+
+
+function init_Ticker(){
+
+  minuteTimer = setInterval(timedInt, 3600);
+
+  //targ = "SOL";
+
+  initCanvas();
+
+  }
 

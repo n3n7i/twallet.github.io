@@ -1,11 +1,14 @@
 
-var s_hist;
+var s_hist = [];
 var t_hist;
 
 var t_page=0;
 
 
-async function get_txhist(key, xnum=200, xbef=""){
+async function get_txhist(key, xnum=50, xbef=""){
+
+  if (s_hist.length>0)
+    return s_hist;
 
   var cfg = {limit: xnum, };
 
@@ -26,7 +29,7 @@ async function get_txhist(key, xnum=200, xbef=""){
 async function get_txdata(keydata, page=0){
 
 
-  console.log('called@'+page);
+  console.log('called@ '+page);
 //  if xbef
 
   var sigs = []
@@ -47,9 +50,9 @@ async function get_txdata(keydata, page=0){
 
   if(sigs.length>0){
 
-    var steps = [page*20, (page+1)*20];
+    var steps = [page*5, (page+1)*5];
 
-    var tx = await con.getParsedTransactions(sigs.slice(steps[0],steps[1]), "finalized");
+    var tx = await con.getParsedTransactions(sigs.slice(steps[0],steps[1]), { maxSupportedTransactionVersion: 0, commitment: "finalized"});
 
     t_hist=tx;
 
@@ -113,13 +116,13 @@ function print_txdata(l){
 
   var zstr = "<table border=1 class=inline>";
 
-  var coldata = ["id", "fee", "signs", "sig1", "keys", "lampchange", "lampfinal", "key0", "instructions"];
+  var coldata = ["id",  "signs", "keys", "fee", "sig1", "lampchange", "lampfinal", "key0", "instructions"];
 
   zstr+= gentr_Var(coldata);
 
   for (var i=0;i<l.length; i++){
 
-    var t1_page = ((t_page-1)*20) +i;
+    var t1_page = ((t_page-1)*5) +i;
 
     var t1_fee = l[i].meta.fee;
 
@@ -137,22 +140,69 @@ function print_txdata(l){
 
     var t1_lamp3 = l[i].transaction.message.accountKeys[0].pubkey.toBase58().slice(0,4);
 
+    var xmeta = l[i].meta;
+
     var insdata = [];
 
     for (var j=0;j<t1_inst.length; j++){
 
       var t2 = t1_inst[j].program;
+
+      var t4 = t1_inst[j].programId.toBase58();
+
+
+      if (t4 == jm_progKey)
+
+        t2 = "Jupiter market";
+
+
+      if (t4 == jm_compKey)
+
+        t2 = "priority key";
+
+
+
       var t3 = (t1_inst[j].parsed)? t1_inst[j].parsed.type: "?";
 //      var t4 = t1_inst[j].
 
       insdata.push([t2,' ',t3]);
       }
 
+      for (k in xmeta.preTokenBalances){
+
+        //console.log("test", k);
+
+        var m = xmeta.preTokenBalances[k];
+
+        var m2 = xmeta.postTokenBalances[k];
+
+        if (m && m.owner == loadpub.toBase58())
+
+          insdata.push([m.mint.slice(0,8), m2.uiTokenAmount.uiAmount - m.uiTokenAmount.uiAmount]);
+
+        }
+
+//      for (k in xmeta.postTokenBalances){
+
+  //      console.log("test2", k);
+
+    //    var m = xmeta.postTokenBalances[k];
+
+      //  if (m && m.owner == loadpub.toBase58())
+
+        //  insdata.push([m.mint, m.uiTokenAmount.uiAmount]);
+
+        //}
+
+
+
 //    console.log(t1_fee + " "+t1_sig);
 
 //    console.log(insdata);
 
-    zstr+= gentr_Var([t1_page, t1_fee, t1_sig, t1_sig0, t1_keys, t1_lamp, t1_lamp2, t1_lamp3].concat(insdata));
+    zstr+= gentr_Var([t1_page, t1_sig, t1_keys, t1_fee,  t1_sig0,  t1_lamp, t1_lamp2, t1_lamp3]);
+
+    zstr+= gentr_Var(["","",""].concat(insdata));
 
     }
 

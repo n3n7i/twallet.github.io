@@ -1,21 +1,6 @@
 
   body{ padding: 5px 5px; margin: 0px; background-color: #000; color: #6F6;}
 
-  div{
-    border-radius:8px;}
-
-  ul{
-    border-radius:24px;
-    margin:8px;
-    padding:2px;
-    }
-  
-  li{
-    border-radius:24px;
-    margin:2px;
-    }
-
-
   div.pad{
     text-align: center;
     display: block;
@@ -25,7 +10,7 @@
     padding:auto;
     }
 
-  ul { //padding:0px; 
+  ul { padding:0px; 
       display:block;
       background-color: #333;
       position: fixed;
@@ -35,7 +20,6 @@
   li{
     display:inline;
     padding: 10px 20px;
-    transition: 0.2s;
     }
 
   li:hover{
@@ -44,62 +28,23 @@
 
   .drop{
     display:none;
-    //opacity: 0;
     position:relative;
-    border: 2px solid #000;
-    top: 10px;
-    //transition: 0.7s;
     }
-
-//  li .drop{     transition: 0.7s;   opacity: 0;}
 
   li:hover .drop{
     display:block;
     position:absolute;
-    animation: fadeIn 0.2s 0.3s 1;
-    animation-fill-mode: both;
-    //opacity: 1;
     }
-
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-
-@keyframes fadeIn2 {
-  from {opacity: 0.5;}
-  50% {opacity: 1;} 
-  to {opacity: 0;}
-}
-
-
-//li .drop{     transition: 1s; }
-
-@keyframes fadeOut {
-  from {opacity: 1;}
-  to {opacity: 0}
-}
-
-
-ul .drop ul{
-    background-color: #444;}
 
   ul.submenu li{
     display:block;
-    background-color: #444;
-    transition: 0.4s;
-    }
+    background-color: #555;}
 
   ul.submenu li.disable:hover{
     background-color: #555;}
 
   ul.submenu li:hover{
-    background-color: #777;
-    //animation: fadeIn2 0.4s 0.1s infinite;
-    //animation-fill-mode: both;
-    }
+    background-color: #777;}
 
   div.block{
     display: inline-block;

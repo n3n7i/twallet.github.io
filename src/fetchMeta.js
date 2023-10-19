@@ -188,7 +188,11 @@ function imgStr(x, y){
 
   for (var i=0;i<n;i++){
 
+    if (i%10 == 0)
+      tx += "<br>";
+
     tx += "<img class=icon src='"+x[i]+"' title='"+y[i]+"'>";
+
 
     }
 
