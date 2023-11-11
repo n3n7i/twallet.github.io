@@ -12,6 +12,16 @@ var JM_addr2 = "https://token.jup.ag/all"
 
 var JM_api4 = "https://quote-api.jup.ag/v4/quote"; 
 
+var JM_api4B = 'https://quote-api.jup.ag/v4/swap';
+
+
+var JM_api6 = "https://quote-api.jup.ag/v6/quote"; 
+
+var JM_api6B = 'https://quote-api.jup.ag/v6/swap';
+
+var J_api6 = true;
+
+
 var jm_prices = [];
 
 var jm_progKey = "JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB";
@@ -308,7 +318,30 @@ function marketData(x){
 
   xcheck += "<small>(use currency-pair amount for sell value if checked)</small><br></small>";
 
-  popup3.log(tstr + xcheck);
+  xcheck += "<hr><small>Use directRoutes </small><input type=checkbox name='r_direct' value='require direct' checked /><br><small><br></small>";
+
+  //xcheck += "+1% priority <input type=checkbox name='prior1' value='allow ExactOut' /><br><small>.<br></small>";
+
+  xcombo = "Slip basis: <select id='baseSlip'>"
+  xcombo = xcombo + "<option value='def'>0.05%</option>"
+  xcombo = xcombo + "<option value='def2' selected>0.25%</option>"
+  xcombo = xcombo + "<option value='def3'>0.75%</option></select>"
+
+  xcheck = xcheck + xcombo;
+
+  xcombo = " || priority: <select id='basePrior'>"
+  xcombo = xcombo + "<option value='def'>+0.0% [x1.0]</option>"
+  xcombo = xcombo + "<option value='def1' selected>+1.0% [x1.01]</option>"
+  xcombo = xcombo + "<option value='def2'>+5.0% [x1.05]</option>"
+  xcombo = xcombo + "<option value='def3'>+10.0% [x1.10]</option>"
+  xcombo = xcombo + "<option value='def4'>+50% [x1.50]</option>"
+  xcombo = xcombo + "<option value='def5'>+150% [x2.50]</option>"
+  xcombo = xcombo + "<option value='def6'>+400% [x5.00]</option></select>"
+//  xcombo = xcombo + "<option value='def9'>+900% [x10.00]</option>"
+//  xcombo = xcombo + "<option value='def9'>+2400% [x25.0]</option>"
+
+
+  popup3.log(tstr + xcheck + xcombo);
 
   market_setHandler();
 
@@ -405,7 +438,7 @@ async function getQuote(id, xmode){
 
         var xdec = mlist_Dec[ind_dec];
 
-	await dataReq_jup(t2b, t1, am * 10**xdec, true);
+	await dataReq_jup(t2b, t1, am * 10**xdec);
 
         }
 
@@ -428,9 +461,16 @@ function showQuote(x){
 
   var z = x.data.data;
 
-  if (!z)
+  if (!z){
 
-    return 0;
+    console.log("Data.data empty?\n", x.data);
+
+    if (J_api6)
+
+      z = [x.data];
+
+    //return 0;
+    }
 
   var n = z.length;
 
@@ -529,6 +569,7 @@ function showQuote(x){
   if (selectMint == -1)
     selectMint = 0;
 
+  console.log("route ", selectMint);
 
   if (n>0){
 
@@ -578,6 +619,12 @@ async function jp_gentx(){
 
   }
 
+var direct_Rt = true;
+
+var direct_Slip = 25;
+
+var slipvals = [5,25,75];
+
 
 async function dataReq_jup(t1, t2, am, exactOut=false){
 
@@ -590,6 +637,16 @@ async function dataReq_jup(t1, t2, am, exactOut=false){
   if (exactOut)
     rx = rx + "&swapMode=ExactOut";
 
+  if (direct_Rt && document.getElementsByName("r_direct")[0].checked)
+
+    rx = rx + "&onlyDirectRoutes=true";
+
+  if (direct_Slip !== 0){
+
+    direct_Slip = slipvals[document.getElementById("baseSlip").selectedIndex];
+
+    rx = rx + "&slippageBps="+String(direct_Slip);}
+
   fetch(rx, {headers:{accept: 'application/json'}}).then((resp) => resp.json()).then((data) => {
 
 	//res3 = data; 
@@ -599,12 +656,14 @@ async function dataReq_jup(t1, t2, am, exactOut=false){
 
   }
 
+var priorityVals = [0,50,250,500, 2500, 7500, 15000].map((x)=>Math.floor(x/1.4));
 
+async function dataPost_jup(r1, k1, def_comp=35){
 
-async function dataPost_jup(r1, k1){
+var dcomp2 = priorityVals[document.getElementById("basePrior").selectedIndex];
 
 const jup_tx = await (
-  await fetch('https://quote-api.jup.ag/v4/swap', {
+  await fetch(JM_api4B, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -612,6 +671,7 @@ const jup_tx = await (
     body: JSON.stringify({
       route: r1,
       userPublicKey: k1,
+      computeUnitPriceMicroLamports: dcomp2,
 
       // route from /quote api
       // user public key to be used for the swap
@@ -656,7 +716,7 @@ async function dataProc_jup(jtx){
 
 
   await c.confirmTransaction(txid);
-  console.log(`https://solscan.io/tx/${txid}`);
+  console.log(`https://solana.fm/tx/${txid}`);
 
 }
 
