@@ -73,6 +73,8 @@ async function seedLogin(data){
 
   loadpub = key.publicKey;
 
+  loadkey = key;
+
   }
 
 
