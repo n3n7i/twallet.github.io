@@ -28,6 +28,8 @@ var mintAuth;
 var mintRead=0;
 
 
+var dispToken = false;
+
 function Esc(x){
   //console.log(x);
   if (x.key == "Escape"){
@@ -261,6 +263,13 @@ async function menuHandler(){
 
     }
 
+  if (menuid == "jpicons"){
+
+    dispToken = !dispToken;
+
+    xcons.log("jupiter icons "+ (dispToken==true?"Displayed":"Not displayed"));
+
+    }
 
 
 
@@ -1145,12 +1154,30 @@ function getRes(r, xClear=true){
 
   if (mode2==true){
 
+  //matchToken();
+
   var n = r.value.length;
   var Xstr = "<table border='1px #0009'>";
   var zstr = "<tr><td>icon</td><td>Account key</td><td>Mint address</td><td>Lamports</td><td>dec</td><td>Amount</td><td></td></tr>";
   for (var i=0; i<n; i++){
 
+    var icon_src = "";
+    if (dispToken){
+
+      var mintkey = r.value[i].account.data.parsed.info.mint;
+
+//    var icon_id = jups_mat.filter((x=>x.wallet == i))[0]; // .strict;
+
+      var icon_id = jupstrict.filter((x=>x.address == mintkey))[0]; // .strict;    
+
+      //if (icon_id) icon_src = jupstrict[icon_id.strict].logoURI;
+
+      if (icon_id) icon_src = icon_id.logoURI;}
+
     zstr += "<tr><td>";
+
+    if (dispToken) zstr += "<img src='"+icon_src+"' class=icon2></img>";
+
     zstr = zstr + "</td><td>"
     zstr = zstr + r.value[i].pubkey.toBase58() + "</td><td>";
     zstr = zstr + r.value[i].account.data.parsed.info.mint + "</td><td>";

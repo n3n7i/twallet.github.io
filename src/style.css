@@ -101,6 +101,15 @@
     height:50px;
     }
 
+
+  img.icon2{
+
+    display: inline-block;
+    width:32px;
+    height:32px;
+    }
+
+
   .buttons{
 
     display: inline-block;
