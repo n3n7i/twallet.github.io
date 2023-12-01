@@ -1,0 +1,137 @@
+<html>
+<body bgcolor=#006 text=#FFF>
+<style>
+div{
+  display:inline-block;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  }
+.green{
+  //background-color: #040;
+  color: #FFF;
+  }
+
+.border{
+  border: 1px solid #FFF;
+  }
+
+.plain{
+  display:inline-block;
+  border-radius: 0px;
+  padding: 0px;
+  margin: 0px;
+  }
+
+.top{
+  vertical-align:top;}
+
+.flex{
+  //display:flex;
+  position:relative;}
+
+.bottom{
+  display: block;
+  position:absolute;
+  //align-self: flex-end;
+  right:0px;
+  bottom: 1px;
+  float:right;
+  }
+
+.scroll{
+  overflow-y: scroll;}
+
+.size1{
+  max-height:150px; min-width:250px;}
+
+.size2{
+  min-height:400px; min-width:250px;}
+
+.title{
+  height:30px;}
+
+.grad1 {
+  background-image: linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.7), rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+}
+
+.grad2 {
+  background-image: linear-gradient(to right, rgba(0,255,0,0.3), rgba(0,0,0,0.1),rgba(0,0,0,0.1), rgba(0,0,0,0.1), rgba(0,255,0,0.3));
+}
+
+.right{
+  margin: 10px;
+  float: right;}
+
+.hide{
+  display:none;}
+
+</style>
+<div class="plain border size2 grad1">
+<div class="green grad2">Wallet address</div> <span class=right>quant</span><br>
+<div style="overflow-y: scroll; max-height:150px; min-width:250px;" class="border grad1" >
+<div class="green grad2">Test</div> <span class=right>quant</span><br>
+<div class=green>Test1</div> <span class=right>quant</span><br>
+<div class=green>Test2</div> <span class=right>quant</span><br>
+<div class=green>Test3</div> quant<br>
+<div class=green>Test4</div> quant<br>
+<div class=green>Test5</div> quant<br>
+<div class=green>Test6</div><br>
+<div class=green>Test7</div><br>
+<div class=green>Test8</div><br>
+</div><br>
+<div style="overflow-y: scroll; max-height:150px; min-width:250px;" class=border>
+Token Actions:<br>
+<input type=button value="Swap"></input>
+<input type=button value="Send"></input>
+<input type=button value="Close"></input>
+</div>
+<br>
+<div style="overflow-y: scroll; max-height:150px; min-width:250px;" class=border>
+Tx:<br>
+</div>
+</div>
+<div class="plain border top size2 hide">
+<div class="plain flex size2">
+<div class="border">page2</div> Token Swap<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+
+<div class="plain border top size2  hide">
+<div class="plain flex size2">
+<div class=border>page3</div> Token Send<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+<div class="plain border top size2 hide">
+<div class="plain flex size2">
+<div class=border>page4</div> Address list<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+
+<div class="plain border top size2 hide">
+<div class="plain flex size2">
+<div class=border>page5</div> Memo Message service<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+</body>
+</html>
