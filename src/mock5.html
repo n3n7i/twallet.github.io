@@ -91,7 +91,7 @@ div{
 <div class="plain top">
 <div style="overflow-y: scroll; max-height:150px; min-width:250px;" class="border top">
 Token Actions:<br>
-<input type=button value="Swap" id="test" ontouchstart="get_Touch(event)"></input>
+<input type=button value="Swap" id="test" onclick="get_Click(event)" ontouchend="get_Touch(event)"></input>
 <input type=button value="Send"></input>
 <input type=button value="Close"></input>
 </div><br>
@@ -144,12 +144,26 @@ amount: <br>
 <script>
 
 function get_Touch(e){
-  
-  if (e.target.id!=="")
+
+  window.alert(e.target);
+  if (e.target.id!==""){
     window.alert(e.target.id + " detected!");
     }
-
   }
+
+
+function get_Click(e){
+  window.alert(e.target);
+
+  if (e.target.id!==""){
+    window.alert(e.target.id + " clicked");
+    }
+  }
+
+
+
+
+window.alert("testing!");
 
 </script>
 </body>
