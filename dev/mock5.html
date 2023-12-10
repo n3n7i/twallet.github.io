@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://bundle.run/buffer@6.0.3"></script>
+<script src="https://unpkg.com/@solana/web3.js/lib/index.iife.js"></script>
+</head>
+
+<body bgcolor=#888 text=#FFF>
+<style>
+div{
+  display:inline-block;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  }
+.green{
+  //background-color: #040;
+  color: #FFF;
+  }
+
+.border{
+  border: 1px solid #FFF;
+  //border-collapse;
+  //margin-collapse;
+  }
+
+.plain{
+  display:inline-block;
+  border-radius: 0px;
+  padding: 0px;
+  margin: 0px;
+  }
+
+.top{
+  vertical-align:top;}
+
+.flex{
+  //display:flex;
+  position:relative;}
+
+.bottom{
+  display: block;
+  position:absolute;
+  //align-self: flex-end;
+  right:0px;
+  bottom: 1px;
+  float:right;
+  }
+
+.scroll{
+  overflow-y: scroll;}
+
+.size1{
+  max-height:250px; min-width:350px;}
+
+.size2{
+  min-height:100px; min-width:90%;}
+
+.size3{
+  max-height:250px; min-width:350px;}
+
+.title{
+  height:30px;}
+
+.grad1 {
+  background-image: linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.7), rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+}
+
+.grad2 {
+  background-image: linear-gradient(to right, rgba(0,255,0,0.3), rgba(0,0,0,0.1),rgba(0,0,0,0.1), rgba(0,0,0,0.1), rgba(0,255,255,0.3));
+}
+
+.grad2B {
+  background-image: linear-gradient(to right,rgba(0,255,255,0.3),  rgba(0,0,0,0.1),rgba(0,0,0,0.1), rgba(0,0,0,0.1), rgba(0,255,0,0.3));
+}
+
+.grad2C {
+  background-image: linear-gradient(to bottom left,rgba(12, 243, 168,0.05),  rgba(103, 150, 206,0.1), rgba(211,40, 251,0.05));
+}
+
+
+.right{
+  //margin: 10px;
+  float: right;}
+
+.pad{
+  margin:10px;
+  padding:5px;}
+
+.pad2{
+  margin: 2px;
+  padding:2px;}
+
+.button{
+  min-width:50px;}
+
+.hide{
+  display:none;}
+
+.inline{
+
+  display: inline-block;}
+
+.fillwidth{
+
+  width:100%;}
+
+.icon{
+
+  height:40px;
+  width:40px;}
+
+//.top{
+//  vertical-align: top;}
+
+</style>
+<div class="plain border size2 grad1">
+<div class="green grad2B" id="Addr" onclick='wal_export()'>Wallet address</div> <span class="pad right" id="Bal">quant</span><br>
+
+<div class='plain border fillwidth'> <span id="Sol" class=pad></span> <span class='plain right' id="Tok_val"> - </span></div><br>
+
+<div class="border grad1 scroll size3" id="Tok">
+
+<div class="green grad2C">Test</div> <span class=right>quant</span><br>
+<div class=green>Test1</div> <span class=right>quant</span><br>
+<div class=green>Test2</div> <span class=right>quant</span><br>
+<div class=green>Test3</div> quant<br>
+<div class=green>Test4</div> quant<br>
+<div class=green>Test5</div> quant<br>
+<div class=green>Test6</div><br>
+<div class=green>Test7</div><br>
+<div class=green>Test8</div><br>
+</div>
+<div class="plain top">
+<div style="overflow-y: scroll; max-height:450px; min-width:250px;" class="border top grad2C">
+Token Actions:<br>
+<div class="icon right plain inline top"><img id="iSel" class=icon></img></div>
+<input type=button value="[+]" class="pad button"></input>
+<input type=button value="[-]" class="pad button" id="test" onclick="get_Click(event)" ontouchend="get_Touch(event)"></input>
+<input type=button value="[>]" class="pad button"></input><br>
+<!-- input type=button value="[x]" class="pad button"></input --!>
+
+Amount:  <input type=number value=0 class=pad2 id=AmIn onchange=xAmount()></input><br>
+Address: <input type=text class=pad2></input><br>
+<br>
+<div class="plain border pad2">
+
+<table><tr><td>
+Market: <select class=pad2> 
+<option value="USDC">USDC</option>
+<option value="USDT">USDT</option>
+<option value="SOL">SOL</option></select>
+
+</td><td>
+Direct: <input type="checkbox" checked></input>
+
+</td><td></tr><tr><td>
+Priority: <select class=pad2> 
+<option value="1" selected>+1%</option>
+<option value="5">+5%</option>
+<option value="20">+20%</option>
+<option value="50">+50%</option>
+<option value="200">+200%</option>
+<option value="400">+400%</option>
+</select>
+
+</td><td>
+Slippage: <select class=pad2> 
+<option value=".3" selected>+- 0.3%</option>
+<option value=".5">+- 0.5%</option>
+<option value=".75">+- 0.75%</option>
+<option value="1.5">+- 1.5%</option>
+</select>
+
+</td></tr></table>
+
+Value: <span id=AmVal class=pad2></span><br>
+Units per $: <span id=UnitVal class=pad2></span><br>
+</div>
+</div><br>
+<div style="overflow-y: scroll; max-height:150px; min-width:250px;" class=border>
+Tx:<br>
+</div>
+</div>
+</div>
+
+<div class="plain border top size2">
+<div class="plain flex size2">
+<div class="border">page2</div> Token Swap<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+<div class="plain border top size2  hide">
+<div class="plain flex size2">
+<div class=border>page3</div> Token Send<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+<div class="plain border top size2 hide">
+<div class="plain flex size2">
+<div class=border>page4</div> Address list<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+<div class="plain border top size2 hide">
+<div class="plain flex size2">
+<div class=border>page5</div> Memo Message service<br>
+from: <br>
+to: <br>
+amount: <br>
+<div class="bottom border plain"> [⇦] </div><br>
+</div>
+</div>
+
+<script src="mwallet.js"></script>
+<script src="mw.js"></script>
+<script src="interface.js"></script>
+<script src="m_utils.js"></script>
+testing...
+<span id="xAddr">..</span><br>
+<span id="xBal">..</span><br>
+<span id="xSol">..</span><br>
+
+
+
+<script>
+
+var jupData=[];
+
+var mobWallet = new wallet_Obj();
+
+
+async function startup(){
+
+  var key = await firstload();
+
+  show_Addr(key);
+
+  mobWallet.address = key.publicKey.toBase58();
+
+  mobWallet.keypair = key;
+
+  var con = await connect(xloc);
+
+  var bal = await std_connect(con, "Balance", key.publicKey);
+
+  show_Balance(bal);
+
+  await show_SolVal();
+
+  //var testkey = s_pk("2bHQiUSQzzbiJ28ZnuTVxAsajsscMc5QwagurqsjVCb8")
+
+  //6T3uroaTip7pcLmmjGzZx9i2k4F2t4FvRBdWZnbxJaNS
+
+  var testkey = s_pk("6T3uroaTip7pcLmmjGzZx9i2k4F2t4FvRBdWZnbxJaNS")
+
+  document.body.bgColor="#333";
+
+  //var tok = await std_connect(con, "Account", key.publicKey);
+
+  var tok = await std_connect(con, "Account", testkey);
+
+  mobWallet.tok2 = tok;
+
+  console.log(tok);
+
+  var ntok = tok.value.length;
+
+  if (ntok>0){
+
+    var t_adpi = tok.value.map((x)=>x.account.data.parsed.info);
+
+    var t_mints = t_adpi.map((x)=>x.mint);
+
+    var t_amount = t_adpi.map((x)=>x.tokenAmount.uiAmount);
+
+    var t_dec = t_adpi.map((x)=>x.tokenAmount.decimals);
+
+    show_Tokens([t_mints, t_amount]);
+
+    }
+
+  var tdata = await jupToken_info(); 
+
+  jupData = tdata;
+
+  var tdata2 = walletFilter(t_mints, tdata);
+
+  var t3 = tdata2.filter((x)=> x.data);
+
+  var w4 = t3.map((x) => t_amount[x.id]);
+
+  var w5 = t3.map((x) => x.data.symbol);
+
+  var pdata = await dataReq_jup_prices(w5);
+
+  var pd2 = x_interpret(pdata);
+
+  //var p2 = pdata.data.map((x)=> x.price);
+
+  var p3 = pd2.map((x)=> x.data.price);
+
+  var p4 = pd2.map((x)=> x.id);
+
+  var xValues=[];
+
+  var xTotals = 0;
+
+  for (var i=0;i<pd2.length; i++){
+
+    var matchAm = t3.filter((x)=> x.data.symbol==p4[i])[0];
+
+    var Am = t_amount[matchAm.id];
+
+    var xmint = t_mints[matchAm.id];
+
+    var xdec = t_dec[matchAm.id];
+
+    xValues.push({id: p4[i], price: p3[i], amount: Am, value: p3[i]*Am, mint: xmint, dec: xdec});
+
+    xTotals += p3[i]*Am;
+
+    }
+
+  mobWallet.tokens = xValues;
+
+  mobWallet.tokens.sort(sortx).reverse();
+
+  console.log("token Holdings: $"+xTotals.toFixed(3));
+
+  show_Elementx("token Holdings: $"+xTotals.toFixed(3), "Tok_val");
+
+  var xv1 = xValues.map((x)=>x.id);
+  var xv2 = xValues.map((x)=>"@"+x.price);
+  var xv3 = xValues.map((x)=>"#"+x.amount);
+  var xv4 = xValues.map((x)=>"$"+x.value.toFixed(3));
+
+  //show_Tokens3x([xv1, xv3, xv2, xv4], "Tok");
+
+  show_Tokens4([xv1, xv3, xv2, xv4]);
+
+  console.log(xValues);
+
+  console.log("pdata:", pdata);
+
+  console.log("pd2:", pd2);
+
+//  show_Tokens2([w4, w5]);
+
+//  show_Tokens3([p4, p3]);
+
+  console.log(tdata2);
+
+  console.log(t3);
+
+  console.log([t_mints, t_amount]);
+
+  console.log(w4, w5);
+
+  return pdata;
+
+  }
+
+var pdata = startup();
+
+</script>
+
+
+
+
+</body>
+</html>
