@@ -268,9 +268,9 @@ async function startup(){
 
   document.body.bgColor="#333";
 
-  //var tok = await std_connect(con, "Account", key.publicKey);
+  var tok = await std_connect(con, "Account", key.publicKey);
 
-  var tok = await std_connect(con, "Account", testkey);
+  //var tok = await std_connect(con, "Account", testkey);
 
   mobWallet.tok2 = tok;
 
