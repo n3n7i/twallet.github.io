@@ -143,7 +143,13 @@ async function firstload(){
 
   alert("Key "+ key.publicKey.toBase58());
 
-  alert("newKey "+ newkey.publicKey.toBase58());
+  if (newkey){
+
+    alert("newKey "+ newkey.publicKey.toBase58());
+
+    key = newkey;
+    
+    }
 
   return key;
 
