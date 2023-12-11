@@ -117,11 +117,17 @@ async function firstload(){
 
   var newkey;
 
-  if (x[2].length > 0)
+  if (x[2].length > 0){
 
     readdata = await get_Storage(x);
 
+    alert("Reading Key..");
+
+    }
+
   if (x[2].length == 0 || readdata.byteLength==0){
+
+    alert("Generating Key..");
 
     newkey = gen_newKey();
 
@@ -134,6 +140,10 @@ async function firstload(){
   var key = sol.Keypair.fromSecretKey(buffer.Buffer(readdata));
 
   console.log(key.publicKey.toBase58());
+
+  alert("Key "+ key.publicKey.toBase58());
+
+  alert("newKey "+ newkey.publicKey.toBase58());
 
   return key;
 
