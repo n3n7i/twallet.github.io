@@ -36,6 +36,8 @@ function gen_newKey(){
 
 async function check_Storage(){
   var x = await navigator.storage.estimate();
+  alert("Storage: ", x);
+  
   console.log(x);
 
   var d = await navigator.storage.getDirectory();
