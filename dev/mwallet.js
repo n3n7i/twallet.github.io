@@ -36,11 +36,13 @@ function gen_newKey(){
 
 async function check_Storage(){
   var x = await navigator.storage.estimate();
-  alert("Storage: ", x);
+  alert("Storage: ", x.quota, " ", x.usage);
   
   console.log(x);
 
   var d = await navigator.storage.getDirectory();
+
+  if(!d) alert("opfs getdir fail?");
 
   var fileIds = [];
 
