@@ -1,0 +1,32 @@
+<html>
+<body>
+<script>
+
+async function portReq(){
+
+  if (navigator.serial.getPorts){ 
+    var res = await navigator.serial.getPorts();
+    return res;
+    }
+
+  return -1;
+
+  }
+
+
+async function usbReq(){
+
+navigator.usb.getDevices().then((devices) => {
+  console.log(`Total devices: ${devices.length}`);
+  devices.forEach((device) => {
+    console.log(
+      `Product name: ${device.productName}, serial number ${device.serialNumber}`,
+    );
+  });
+});
+
+}
+
+</script>
+</body>
+</html>
