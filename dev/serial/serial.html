@@ -6,6 +6,8 @@ async function portReq(){
 
   if (navigator.serial.getPorts){ 
     var res = await navigator.serial.getPorts();
+
+    console.log(res);
     return res;
     }
 
@@ -28,5 +30,8 @@ navigator.usb.getDevices().then((devices) => {
 }
 
 </script>
+
+<input type=button onclick='portReq()' value='Ports'></input>
+<input type=button onclick='usbReq()' value='Usb'></input>
 </body>
 </html>
