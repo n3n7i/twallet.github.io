@@ -624,8 +624,13 @@ async function menuHandler(){
     var auth1 = s_pk(prompt("Current Authority"));
 	  
     var auth2 = s_pk(prompt("New Authority"));
-	  
-    var auth3 = confirm("Enable new authority?");
+	
+
+    if (menuid == "authX")  
+      var auth3 = confirm("Enable new authority?");
+
+    if (menuid == "authY")  
+      var auth3 = true;
 			
     var authmodex = (menuid=="authY")? 2:0; 
 
