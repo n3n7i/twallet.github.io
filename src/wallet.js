@@ -617,6 +617,8 @@ async function menuHandler(){
     }
 	
   if (menuid == "authX" || menuid == "authY"){
+
+    lastReq = menuid;
 	  
     var targ = s_pk(prompt("Target Account"));
     var auth1 = s_pk(prompt("Current Authority"));
@@ -625,7 +627,7 @@ async function menuHandler(){
 	  
     var auth3 = confirm("Enable new authority?");
 			
-    var authmodex = (menuid=="AuthY")? 2:0; 
+    var authmodex = (menuid=="authY")? 2:0; 
 
 //async function Authto_Inst(account, currentAuth, mode, newEnable, newAuth){
 
@@ -637,7 +639,9 @@ async function menuHandler(){
 	    
 	menuid = "mint4";
 
-	xsend.log(JSON.stringify(t_tx) + "<br><input type=button value='setAuth' onclick='simXTransaction()'></input>"); //Fix sendtype?
+        var dataX = "<br><input type=button value='setAuth2' onclick='sendXTransaction()'></input>";
+
+	xsend.log(JSON.stringify(t_tx) + "<br><input type=button value='sim setAuth' onclick='simXTransaction()'></input>" + dataX); //Fix sendtype?
 
 	});
 

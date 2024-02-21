@@ -65,7 +65,7 @@ function Auth_encoding(i2, i3, newAuth){ //? [u8,u8,u8,k]
 
     for (var i=0;i<32; i++){
 
-      ax[i+3] = k1[i];
+      ax[i+3] = newAuth[i];
 
       }
       

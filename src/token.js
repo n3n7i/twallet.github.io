@@ -442,6 +442,10 @@ async function simXTransaction(){
 
     var sig = con.simulateTransaction(t_tx, [loadkey, mintPriv], "confirmed");
 
+  if (lastReq == "authY")
+
+    var sig = con.simulateTransaction(t_tx, [loadkey], "confirmed");
+
 
   //var sig = sol.sendAndConfirmTransaction(con, t_tx, [loadkey], "confirmed");
 
