@@ -160,14 +160,23 @@ async function token_Transfer(Xthis){
 
 
 
-async function tokenTransferInst_2(s, d, o, amount, dec,xmode=true, tx2=null){
+async function tokenTransferInst_2(s, d, o, amount, dec, defLamp=500, xmode=true, tx2=null){
 
     // 1. Create Solana Transaction
     var tx = tx2;
 
-    if (tx == null)
+    if (tx == null){
 
       tx = new sol.Transaction();
+
+      var xlamp = defLamp * (1000000 / 10000);
+
+      if (defLamp>0){
+        tx.add(sol.ComputeBudgetProgram.setComputeUnitPrice({ microLamports: Math.floor(xlamp) }));
+        tx.add(sol.ComputeBudgetProgram.setComputeUnitLimit({ units: 10000 }));
+        }
+
+      }
 
     // 2. Add Memo Instruction
     await tx.add(

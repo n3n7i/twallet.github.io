@@ -1322,7 +1322,7 @@ function transferLamps(from, to, amount){
 */
 
 
-async function logMemoC(message, amount, to) {  
+async function logMemoC(message, amount, to, defLamp=500) {  
 
     var con = connect(xloc);
 
@@ -1333,6 +1333,15 @@ async function logMemoC(message, amount, to) {
 
     // 1. Create Solana Transaction
     let tx = new sol.Transaction();
+
+    if (defLamp>0){
+
+      var xlamp = defLamp * (1000000 / 5000);
+
+      tx.add(sol.ComputeBudgetProgram.setComputeUnitPrice({ microLamports: xlamp }));
+      tx.add(sol.ComputeBudgetProgram.setComputeUnitLimit({ units: 5000 }));
+      }
+
 
     // 2. Add Memo Instruction
     await tx.add(
