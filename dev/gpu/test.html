@@ -1,7 +1,16 @@
 <html>
 <body>
 <script>
-  console.log(navigator.gpu);
+
+  console.log("webGPU supported? : ", navigator.gpu);
+
+  console.log("\n other info \n");
+  
+  console.log("approx memory ?: ", navigator.deviceMemory);
+  console.log("Number of cores ?: ", navigator.hardwareConcurrency);
+
+  console.log("OS: ", navigator.platform);
+
 </script>
 </body>
 </html>
