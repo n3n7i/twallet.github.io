@@ -6,14 +6,21 @@ var jupstrict = [];
 
 var jups_mat = [];
 
-var JM_addr1 = "https://token.jup.ag/strict"
+//var JM_addr1 = "https://token.jup.ag/strict"
 
-var JM_addr2 = "https://token.jup.ag/all"
+//var JM_addr2 = "https://token.jup.ag/all"
 
 var JM_api4 = "https://quote-api.jup.ag/v4/quote"; 
 
 var JM_api4B = 'https://quote-api.jup.ag/v4/swap';
 
+// update api?
+
+var JM_price = "https://api.jup.ag/price/v2?ids=";
+
+var JM_addr1 = "https://tokens.jup.ag/tokens?tags=verified";
+
+var JM_addr2 = "https://tokens.jup.ag/tokens?tags=community";
 
 var JM_api6 = "https://quote-api.jup.ag/v6/quote"; 
 
@@ -21,6 +28,10 @@ var JM_api6B = 'https://quote-api.jup.ag/v6/swap';
 
 var J_api6 = true;
 
+
+var JM_order1 = "https://jup.ag/api/limit/v1/openOrders";
+
+var JM_order2 = "https://jup.ag/api/limit/v1/orderHistory";
 
 var jm_prices = [];
 
@@ -56,6 +67,8 @@ async function dataInit_jup(extra = false){ //t1, t2, am){
 
 	//res3 = data; 
 	jupstrict = data;
+
+        xcons.log("jupdata loaded");
 	} );
 
   }
@@ -199,7 +212,9 @@ function reset_ticker(syb){
 
 async function dataReq_jup_price_X(sym){
 
-  var str1 = 'https://price.jup.ag/v4/price?ids=' + sym;
+  //var str1 = 'https://price.jup.ag/v4/price?ids=' + sym;// JM_price
+
+  var str1 = JM_price + sym;
 
   fetch(str1, {headers:{accept: 'application/json'}}).then((resp) => resp.json()).then((data) => {
   
@@ -218,25 +233,35 @@ async function dataReq_jup_price_X(sym){
 
 async function dataReq_jup_prices(){
 
-  var str1 = 'https://price.jup.ag/v4/price?ids=';
+  //var str1 = 'https://price.jup.ag/v4/price?ids=';
+
+  var str1 = JM_price;
 
   var xstr2 = "";
 
   var xlist = [];
 
+  var xlist2 = [];
+
   var rxmax = Math.min(jups_mat.length, 100);
   
   for (var k=0;k<rxmax; k++){
 
-    var sym = jupstrict[jups_mat[k].strict].symbol;
+    var sym = jupstrict[jups_mat[k].strict].address;
 
     xstr2 += sym + ",";
 
     xlist.push(sym);
 
+    xlist2.push(jupstrict[jups_mat[k].strict].symbol);
+
     }
 
   fetch(str1 + xstr2, {headers:{accept: 'application/json'}}).then((resp) => resp.json()).then((data) => {
+
+    xcons.log("prices fetched");
+
+    console.log(data);
 
     jm_prices = data.data;
 
@@ -250,7 +275,7 @@ async function dataReq_jup_prices(){
 
         var p = jm_prices[xlist[k]].price;
 
-        var n = xlist[k];
+        var n = xlist2[k];
 
         var am = wallet_Tok[jups_mat[k].wallet].amount;
 
@@ -459,6 +484,17 @@ var last_qt = [];
 
 function showQuote(x){
 
+
+  if (J_api6){
+
+
+      console.log("Using api v6!");
+
+      console.log(x);
+
+      }
+
+
   var z = x.data.data;
 
   if (!z){
@@ -466,6 +502,8 @@ function showQuote(x){
     console.log("Data.data empty?\n", x.data);
 
     if (J_api6)
+
+//      console.log(x);
 
       z = [x.data];
 
@@ -508,7 +546,7 @@ function showQuote(x){
 
 //  ((am1_in/amn_in) > 1.001)
 
-  if (n>0){
+  if ((n>0) & (!J_api6)){
 
     for (var i=0;i<n; i++){
 
@@ -571,17 +609,19 @@ function showQuote(x){
 
   console.log("route ", selectMint);
 
-  if (n>0){
+  if ((n>0)){
 
     xstr = xstr + "r Select 1: " + sid +  ", r Select 2: " + sid2 + "<br>";
 
     xstr = xstr + "best by price:" + z[0].inAmount + "u -> " + z[0].outAmount + "u <br>";
 
-    xstr = xstr + "token route: " + rmints[0].toString() + "<br>";
+    if (!J_api6) xstr = xstr + "token route: " + rmints[0].toString() + "<br>";
+
+    if (J_api6) xstr = xstr + "token hops: " + z[0].routePlan.length.toString() + "<br>";
 
     xstr = xstr + "best by route:" + z[selectMint].inAmount + "u -> " + z[selectMint].outAmount + "u <br>";
 
-    xstr = xstr + "token route: " + rmints[selectMint].toString() + "<br>";
+    if (!J_api6) xstr = xstr + "token route: " + rmints[selectMint].toString() + "<br>";
 
     xstr = xstr + "swap mode: " + z[0].swapMode + ", max slip: " + z[0].slippageBps + " base points<br>";
 
@@ -591,7 +631,7 @@ function showQuote(x){
 
     //xstr = xstr + "Max Lamp est: " + ((z[0].marketInfos.length)*2040000 + 900000 + 5000) + "L <br>";
 
-    xstr = xstr + "Est lamp required: " + ((z[selectMint].marketInfos.length - chmints[selectMint])*2040000 + 5000) + "L <br>";
+    if (!J_api6) xstr = xstr + "Est lamp required: " + ((z[selectMint].marketInfos.length - chmints[selectMint])*2040000 + 5000) + "L <br>";
 
     //xstr = xstr + "~Min lamp required: " + (900000 + 5000) / 5000 + " Sig <br>";
 
@@ -605,11 +645,24 @@ function showQuote(x){
 
   }
 
+var enc_tx;
+
+
 async function jp_gentx(){
 
-  var t1 = await dataPost_jup(last_qt, loadpub.toBase58());
+  console.log(last_qt);
+
+  var t1 = await (await dataPost_jup(last_qt, loadpub.toBase58())).json();
 
   console.log(t1);
+
+  enc_tx = t1;
+
+
+
+  //console.log("swap data length:", t1.swapTransaction.length);
+
+  checktx = sol.VersionedTransaction.deserialize(Buffer.from(t1.swapTransaction, 'base64'));
 
   if (confirm("Ok to send?")){
 
@@ -618,6 +671,7 @@ async function jp_gentx(){
     }
 
   }
+
 
 var direct_Rt = true;
 
@@ -629,6 +683,10 @@ var slipvals = [5,25,75];
 async function dataReq_jup(t1, t2, am, exactOut=false){
 
   var rx = JM_api4 + "?inputMint=" + t1 + "&outputMint=" + t2 + "&amount="+am
+
+  if (J_api6)
+
+    rx = JM_api6 + "?inputMint=" + t1 + "&outputMint=" + t2 + "&amount="+am + "&restrictIntermediateTokens=true"
 
   var ex2 = document.getElementsByName("buyExact")[0].checked;
 
@@ -647,7 +705,9 @@ async function dataReq_jup(t1, t2, am, exactOut=false){
 
     rx = rx + "&slippageBps="+String(direct_Slip);}
 
-  fetch(rx, {headers:{accept: 'application/json'}}).then((resp) => resp.json()).then((data) => {
+//method: "GET", mode: "no-cors", credentials: "omit",
+
+  fetch(rx, { headers:{accept: 'application/json'}}).then((resp) => resp.json()).then((data) => {
 
 	//res3 = data; 
 	jupdata.push({data: data}); 
@@ -656,15 +716,31 @@ async function dataReq_jup(t1, t2, am, exactOut=false){
 
   }
 
+
 var priorityVals = [0,50,250,500, 2500, 7500, 15000].map((x)=>Math.floor(x/1.4));
+
+var xpriorVals = [0,50,250,500, 2500, 7500, 15000];
 
 async function dataPost_jup(r1, k1, def_comp=35){
 
-var dcomp2 = priorityVals[document.getElementById("basePrior").selectedIndex];
+  var dcomp2 = priorityVals[document.getElementById("basePrior").selectedIndex];
+
+
+  var api4 = JM_api4B;
+
+  if (J_api6 == true)
+
+    api4 = JM_api6B;
+
+
+  if (J_api6 == false){
+
+    console.log("using api v4");
 
 const jup_tx = await (
-  await fetch(JM_api4B, {
+  await fetch(api4, {
     method: 'POST',
+    mode: "no-cors",
     headers: {
       'Content-Type': 'application/json'
     },
@@ -684,9 +760,51 @@ const jup_tx = await (
   })
 ).json();
 
-return jup_tx;
-
 }
+
+ if (J_api6 == true){
+
+    console.log("using api v6?");
+
+    var zdata = r1.routePlan[0].swapInfo;
+
+    console.log(zdata);
+
+    console.log(r1);
+
+const jup_tx =   await fetch(api4, {
+    method: 'POST',
+    headers: {      'Content-Type': 'application/json'    },
+    body: JSON.stringify({
+      quoteResponse: r1,
+      userPublicKey: k1,
+      computeUnitPriceMicroLamports: dcomp2,
+
+/**
+
+      quoteResponse,
+      // user public key to be used for the swap
+      userPublicKey: wallet.publicKey.toString(),
+      // auto wrap and unwrap SOL. default is true
+      wrapAndUnwrapSol: true,
+      // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
+      // feeAccount: "fee_account_public_key"
+**/
+    }),
+    });
+
+  return await jup_tx;
+
+  }
+
+//return jup_tx;
+}
+
+var checktx;
+
+var altSign = false;
+
+var memoInj = false;
 
 
 async function dataProc_jup(jtx){
@@ -698,20 +816,50 @@ async function dataProc_jup(jtx){
 //var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
   console.log(t);
 
+  checktx = t;
+
+  if (altSign){
+
+    checktx.message.staticAccountKeys[0] = loadkey.publicKey;}
+
+  if (memoInj){
+
+    var bh = checktx.message.recentBlockhash;
+
+    //var sak = checktx.message.staticAccountKeys.map((x)=>x.toBase58());
+
+    //var id = sak.indexOf("ComputeBudget111111111111111111111111111111");
+
+    //var id2 = new sol.PublicKey("Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo");
+
+    //checktx.message.staticAccountKeys[id] = id2;
+
+    var m1 = memoX("swap memo")
+
+    var m2 = msgCompile(m1, bh)
+
+    msgCombine(checktx, m2);
+
+    //new sol.PublicKey("Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo")
+
+    }
+
+
 // sign the transaction
   t.sign([loadkey]);
-
 
   var c = connect(xloc);
 
 
 // Execute the transaction
-  const rawTransaction = t.serialize()
+/*  const rawTransaction = t.serialize()
   const txid = await c.sendRawTransaction(rawTransaction, {
-    skipPreflight: true,
+    skipPreflight: false,
     maxRetries: 2
     });
+*/
 
+  var txid = await c.sendTransaction(t, loadkey);
   console.log(txid);
 
 
@@ -720,4 +868,41 @@ async function dataProc_jup(jtx){
 
 }
 
+
+async function dataReq_jup_price_X2(sym){
+
+  var str1 = 'https://price.jup.ag/v4/price?ids=' + sym;
+
+  var z = await fetch(str1, {headers:{accept: 'application/json'}}); //.then((resp) => resp.json()).then((data) => {
+  
+  var z2 = await z.json();
+
+  var z3 = z2.data[sym].price;
+
+  return z3;
+
+  }  
+
+
+async function dataReq_jup_orders(sym){
+
+  var str1 = JM_order1 + "?wallet=" + sym;
+
+  var z = await fetch(str1, {headers:{accept: 'application/json'}});
+
+  return z;
+
+  }
+
+
+async function dataReq_jup_orderHist(sym){
+
+  var str1 = JM_order2 + "?wallet=" + sym;
+
+  var z = await fetch(str1, {headers:{accept: 'application/json'}});
+
+  return z;
+
+  }
+  
 
