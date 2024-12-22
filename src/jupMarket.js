@@ -335,7 +335,7 @@ function marketData(x){
 
   tstr = tab_close(tstr);
 
-  var xcheck = "<br><small>Use ExactOut for buy: <input type=checkbox name='buyExact' value='allow ExactOut' checked /><br>";
+  var xcheck = "<br><small>Use ExactOut for buy: <input type=checkbox name='buyExact' value='allow ExactOut' disabled /><br>";
 
   xcheck += "<small>(use currency-pair amount for buy value if unchecked)</small><br>";
 
@@ -343,7 +343,7 @@ function marketData(x){
 
   xcheck += "<small>(use currency-pair amount for sell value if checked)</small><br></small>";
 
-  xcheck += "<hr><small>Use directRoutes </small><input type=checkbox name='r_direct' value='require direct' checked /><br><small><br></small>";
+  xcheck += "<hr><small>Use directRoutes </small><input type=checkbox name='r_direct' value='require direct' disabled /><br><small><br></small>";
 
   //xcheck += "+1% priority <input type=checkbox name='prior1' value='allow ExactOut' /><br><small>.<br></small>";
 
