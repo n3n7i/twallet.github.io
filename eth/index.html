@@ -1,0 +1,279 @@
+<!doctype html>
+
+<html>
+<head>
+<style>
+ .addr{
+    background-color: #0003;
+    display: inline-block;
+    width:500px;
+    //height:50px;
+    padding:10px;
+    }
+  .inline{ display:inline;}
+
+  .res{ color:#777; }
+
+  .xAddr{
+    size:"44";}
+
+  .activeB{
+    background-color: #F003;}
+
+  .hide{
+    display:none;}
+
+  .right{
+    float:right;}
+
+  .wrap{
+
+    overflow-wrap: word-break;}
+
+  .top{
+
+    vertical-align: top;}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+</head>
+<body>
+<div class="addr">
+View address: <br><input type=text value="0x" class="inline" id="iAddr" class=xAddr size="42"></input>
+<input type=button class=inline value="fetch balance" onclick="showBal()"></input>
+<br>Balance: <span class=res id="xBal"> 0 eth</span><br>
+
+
+
+<br> Receive address: <br><input type=text value="0x" class="inline" id="iRec" size="42"></input>
+
+<br><br> Transfer amount: <br><input type=text value="0x" class="inline" id="iTxAm"></input>
+<select id="amSel">
+<option> Ether</option>
+<option> Gwei</option>
+</select>
+
+<br><br> Current Gas price: <br><input type=text value="0x" class="inline" id="iGas"></input>
+<input type=button class=inline value="fetch gas" id="gasB"  onclick="showGas()"></input>
+<br> Gas total:<span class=res id="gasRes"> 21000 * gwei</span>
+<br><br><input type=button class="inline right" value="transfer eth" onclick="gen_tx()"></input>
+<br>
+<input type=button value="Show keys" onclick="elem('Sec').classList.toggle('hide');"></input>
+<br><br>
+
+<div id="Sec" class=hide>
+<input type=button value="Generate new key" onclick="eth_keygen()"></input>
+<input type=button value="Get Public address" onclick="eth_getPub()" class=inline></input>
+<input type=button value="Set view addr" onclick="eth_putPub()" class=inline></input>
+<br><br><span>Import key: <input type="file" id="file-selector" value="Import keyfile" onchange="fileSelect()"></input></span>
+<p>
+<br>Eth Address: <input type=text class="inline right" size=42 id="kAddr"></input>
+<br><br>Secret key: <input type=text class="inline right" size=42 id="kSec"></input>
+<br><br><span id="xLink"></span>
+
+
+</div>
+
+</div>
+<br><br>
+<div class="addr wrap top" >Transfer data: <br><br>
+<span id="tData" class=wrap> info</span></div>
+
+<br><br><br>
+
+
+<script>
+
+const web3 = new Web3("https://eth.llamarpc.com");
+
+var bEth = web3.eth;
+
+async function gas1(){
+  var p1 = await bEth.getGasPrice();  
+  return p1;
+  }
+
+async function getBalance1(adr){  
+  var b1 = await bEth.getBalance(adr);
+  return b1;
+  }
+
+
+
+function elem(x){
+  return document.getElementById(x);}
+
+var iGas = elem("iGas");
+var iAddr = elem("iAddr");
+
+var xBal = elem("xBal");
+
+var gasB = elem("gasB");
+
+var gasR = elem("gasRes")
+
+
+var utils = web3.utils;
+
+
+async function showGas(){
+
+  gasB.classList.add("activeB");
+
+  var z = await gas1();
+
+  gasB.classList.remove("activeB");
+
+  iGas.value = web3.utils.fromWei(z, "gwei");
+
+  gasR.innerHTML = " ~" + Number(web3.utils.fromWei(21000 * Number(z), "gwei")).toFixed(0) + " Gwei";
+  }
+
+
+async function showBal(){
+
+  var z = await getBalance1(iAddr.value);
+
+  xBal.innerHTML = Number(web3.utils.fromWei(z, "ether")).toFixed(6) + " Ether || " + Number(web3.utils.fromWei(z, "gwei")).toFixed(0) + " gwei";
+  }
+
+
+function eth_keygen(){
+
+  var k1 = web3.eth.accounts.create(1);
+
+  elem("kSec").value = k1.privateKey;
+
+  elem("kAddr").value = k1.address;
+
+  console.log("keygen");
+
+  eth_textBlob();
+
+  }
+
+function eth_getPub(){
+
+  if (elem("kSec").value.length !== 66){ console.log("Failed!"); return;}
+
+  var k = elem("kSec").value;
+
+  elem("kAddr").value = web3.eth.accounts.privateKeyToAddress(k);
+
+  console.log("keypub");}
+
+
+function eth_putPub(){
+
+  iAddr.value = elem("kAddr").value;
+
+  }
+
+function eth_textBlob(){
+
+  var b = new Blob([kSec.value], {type:"text/html"});
+
+  var u = URL.createObjectURL(b);
+
+  console.log(u);
+  
+  var blink = "<a href ='"+u+"' >Save key as</a>";
+
+  console.log(blink);
+
+  elem("xLink").innerHTML = blink;
+
+  }
+
+
+var t_tx = [];
+
+function gen_tx(){
+
+  var t_from = iAddr.value;
+
+  var t_to = elem("iRec").value;
+
+  var x_switch = (elem("amSel").selectedIndex==0)? "ether":"gwei";
+
+  var t_amount = utils.toWei(elem("iTxAm").value, x_switch);
+
+  var t_gaslim = 21000;
+
+  var t_gasprice = utils.toWei(elem("iGas").value, "gwei");
+
+  var tx = {from: t_from, to: t_to, value: t_amount, gas: t_gaslim, gasLimit: t_gaslim+1000, gasPrice: t_gasprice};
+
+  var s1 = '<input type=button value="Send tx" onclick="sendTx()"></input>'
+
+  elem("tData").innerHTML = JSON.stringify(tx).replaceAll(',', ", ") + "<br>" + s1;
+
+  t_tx = tx;
+
+  return tx;
+
+  }
+
+async function sendTx(){
+
+  var t = t_tx;
+
+  var k = elem("kSec").value;
+
+  var t2 = await web3.eth.accounts.signTransaction(t, k);
+
+  console.log("Signed ", t2);
+
+  if (confirm("Ok to send?")){
+
+    web3.eth.sendSignedTransaction(t2.rawTransaction).on('receipt', send_rx);
+
+    console.log("Waiting receipt..");
+
+    }
+
+  }
+
+
+function send_rx(e, r){
+
+  console.log(r, e);
+
+  }
+
+
+async function fileSelect(){
+
+  //elem("file-selector").files[0];
+
+  //URL.createObjectURL(this.files[i])
+
+  var f1 = elem("file-selector").files[0];
+
+  //console.log(f1);
+
+  var f2 = await f1.stream();
+
+  //console.log(f2);
+
+  var f3 = await f2.getReader().read();
+
+  //console.log(f3);
+
+  var f4 = String.fromCharCode.apply(null, f3.value);
+
+  //console.log(f4);
+
+  elem("kSec").value = f4;
+
+  }
+
+</script>
+
+
+
+</body>
+</html>
