@@ -231,6 +231,9 @@ async function dataReq_jup_price_X(sym){
   }  
 
 
+var marketPage =0;
+
+
 async function dataReq_jup_prices(){
 
   //var str1 = 'https://price.jup.ag/v4/price?ids=';
@@ -243,17 +246,19 @@ async function dataReq_jup_prices(){
 
   var xlist2 = [];
 
-  var rxmax = Math.min(jups_mat.length, 100);
+  var rxmax = Math.min(jups_mat.length, 20);
+
+  var p_offset = 20 * marketPage;
   
   for (var k=0;k<rxmax; k++){
 
-    var sym = jupstrict[jups_mat[k].strict].address;
+    var sym = jupstrict[jups_mat[k + p_offset].strict].address; //
 
     xstr2 += sym + ",";
 
     xlist.push(sym);
 
-    xlist2.push(jupstrict[jups_mat[k].strict].symbol);
+    xlist2.push(jupstrict[jups_mat[k + p_offset].strict].symbol);
 
     }
 
@@ -277,9 +282,9 @@ async function dataReq_jup_prices(){
 
         var n = xlist2[k];
 
-        var am = wallet_Tok[jups_mat[k].wallet].amount;
+        var am = wallet_Tok[jups_mat[k + p_offset].wallet].amount;
 
-	xpass.push({mint: wallet_Tok[jups_mat[k].wallet].id, symbol: n, amount: am, val: am*p, dec: wallet_Tok[jups_mat[k].wallet].decimals});
+	xpass.push({mint: wallet_Tok[jups_mat[k + p_offset].wallet].id, symbol: n, amount: am, val: am*p, dec: wallet_Tok[jups_mat[k + p_offset].wallet].decimals});
 
         xcons.log(n + "<br>" + am + " @$" + p + "<br>" + am*p);
         //xcons.log();
@@ -366,7 +371,9 @@ function marketData(x){
 //  xcombo = xcombo + "<option value='def9'>+2400% [x25.0]</option>"
 
 
-  popup3.log(tstr + xcheck + xcombo);
+  xpage = "<br><hr><br>Page: <input type=text value=0 onchange='marketPage = this.value;'></input>";
+
+  popup3.log(tstr + xcheck + xcombo + xpage);
 
   market_setHandler();
 
