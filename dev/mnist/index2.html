@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<img id="im1" src="./MNIST_dataset_example.png"></img><br><br>
+
+<script>
+
+
+var im = document.getElementById("im1");
+var im3 = document.createElement("canvas");
+
+var ctx = im3.getContext("2d");
+
+document.body.appendChild(im3);
+
+im3.width = im.width;
+im3.height = im.height;
+
+ctx.drawImage(im, 0,0);
+
+
+//im3.crossOrigin = "anonymous";
+
+//var imgData = ctx.getImageData(0,0,40,40);
+
+//ctx.putImageData(imgData, 40,40);
+
+function mouseEvent(e){
+
+  console.log(e);
+  }
+
+im3.addEventListener("click", mouseEvent);
+
+</script>
+
+</body>
+</html>
