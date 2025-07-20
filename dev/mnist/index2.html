@@ -104,9 +104,9 @@ function copyData(){
   var xcount=0;
   var xtarg =0;
   for (var i=0; i<500; i+=10){ 
-    d.targ.val[i+xtarg] = 1;
+    d.targ.val[i+xcount] = 1;
     xcount+=1;
-    if(xcount==5){ xtarg++; xcount=0;}
+    if(xcount==10){ xtarg++; xcount=0;}
 
     }
 
