@@ -92,11 +92,36 @@ var d = data_init([50, 784], [50, 10]);
 
 console.log(p, d);
 
+
+function copyData(){
+
+  var r = getDataset();  
+
+  var r2 = r.flat(); for (var i=0;i<39200;i++){ d.inp.val[i] = r2[i] / 255;} 
+
+  for (var i=0; i<500; i++){ d.targ.val[i] = 0};
+
+  var xcount=0;
+  var xtarg =0;
+  for (var i=0; i<500; i+=10){ 
+    d.targ.val[i+xtarg] = 1;
+    xcount+=1;
+    if(xcount==10){ xtarg++; xcount=0;}
+
+    }
+
+  }
+
+
+function runTrainer(iters, alpha){
+
+  var p = param_init([784, 75], [75, 10]); // reset params ()
+
+  network_runC(d, p, iters, alpha);
+
+  }
+  
 </script>
-
-
-
-
   
 </body>
 </html>
