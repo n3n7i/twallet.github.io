@@ -550,6 +550,7 @@ function network_runC(data, p, iters, alpha){
 
     }
 
+  return p;
   }
 
 
