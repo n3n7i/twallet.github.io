@@ -87,7 +87,7 @@ function matrix_squaremean(m1){
   }
 
 
-
+/*
 
 function matrix_mult(m1, m2, t){
 
@@ -309,6 +309,8 @@ function stride_Mode(m1, c){
   }
 
 
+*/
+
 function matrix_sub(m1, m2){
 
   if (m1.size[0] != m2.size[0]){ console.log("size err: matsub"); return; }
@@ -347,7 +349,7 @@ function matrix_add(m1, m2, scale=1){
   }
 
 
-
+/*
 function network_step(xdata, model){
 
   var w1 = model.w1;
@@ -401,6 +403,7 @@ function net_tests(m1, m2){
 
   }
 
+*/
 
 function matrix_readout(m1, t){
 
@@ -548,3 +551,55 @@ function network_runC(data, p, iters, alpha){
     }
 
   }
+
+
+
+
+function network_predictC(xdata, model){
+
+  var w1 = model.w1;
+
+  var w2 = model.w2;
+
+  var inp = xdata.inp;
+
+  //var targets = xdata.targ;
+
+
+  //console.log("layer1");
+  var l1 = matrix_multC(inp, w1, [0,1]);
+  //console.log(l1.size);
+
+  //console.log("layer2");
+  var l2 = matrix_multC(l1, w2, [0,1]);
+  //console.log(l2.size);
+
+  return l2;
+
+  }
+
+
+function hotDecode(mat, wid){
+
+  m = mat.size;
+
+  var r = [];
+
+  for (var i=0; i<m[0]; i++){
+
+    var maxid=-1; 
+    var maxval=0; 
+
+    for (var j=0; j<m[1]; j++){
+
+      var t=mat.val[i*m[1]+j];
+      if (t>maxval){ maxval=t; maxid=j;}
+      }
+
+    r.push(maxid);
+    }
+
+  return r;
+ 
+  }
+
