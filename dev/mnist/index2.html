@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<img id="im1" src="./MNIST_dataset_example.png"></img><br><br>
+<img id="im1" src="./MNIST_dataset_example.png" onload="imgCopy()"></img><br><br>
 
 <script>
 
@@ -14,17 +14,16 @@ var ctx = im3.getContext("2d");
 
 document.body.appendChild(im3);
 
-im3.width = im.width;
-im3.height = im.height;
-
-ctx.drawImage(im, 0,0);
-
-
 //im3.crossOrigin = "anonymous";
 
-//var imgData = ctx.getImageData(0,0,40,40);
+function imgCopy(){
+  im3.width = im.width;
+  im3.height = im.height;
+  ctx.drawImage(im, 0,0);
+  }
 
-//ctx.putImageData(imgData, 40,40);
+  //var imgData = ctx.getImageData(0,0,40,40);
+  //ctx.putImageData(imgData, 40,40);
 
 function mouseEvent(e){
 
@@ -58,6 +57,26 @@ function square2vec(img){
 
   }
 
+function getDataset(){
+
+  var mx=20;
+  var my=10;
+
+  rx = [];
+
+  for (var i=0;i<mx;i++){
+    for (var j=0;j<my;j++){
+
+      var ix = ImageSquares(i,j);
+      var tx = square2vec(ix);
+
+      rx.push(tx);
+      }
+
+    }
+
+  return rx;
+  }
 
 
 
