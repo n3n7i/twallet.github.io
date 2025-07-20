@@ -31,6 +31,37 @@ function mouseEvent(e){
   console.log(e);
   }
 
+
+function ImageSquares(i,j){
+
+  var imgData = ctx.getImageData(33*i,33*j,28,28);
+
+  return imgData;}
+
+function px2Grey(r,g,b){
+  return g*0.5 + r*0.3 + b*0.2;}
+
+
+function square2vec(img){
+
+  n = 28*28*4;
+
+  r = [];
+
+  for (var i=0;i<n; i+=4){
+
+    r.push(px2Grey(img.data[i], img.data[i+1], img.data[i+2]));
+
+    }
+
+  return r;
+
+  }
+
+
+
+
+  
 im3.addEventListener("click", mouseEvent);
 
 </script>
