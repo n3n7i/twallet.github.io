@@ -77,13 +77,26 @@ function getDataset(){
 
   return rx;
   }
-
-
-
   
 im3.addEventListener("click", mouseEvent);
 
 </script>
 
+<script src="nn.js"></script>
+
+<script>
+
+var p = param_init([784, 75], [75, 10]);
+
+var d = data_init([50, 784], [50, 10]);
+
+console.log(p, d);
+
+</script>
+
+
+
+
+  
 </body>
 </html>
