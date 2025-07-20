@@ -117,7 +117,9 @@ function runTrainer(iters, alpha){
 
   var p = param_init([784, 75], [75, 10]); // reset params ()
 
-  network_runC(d, p, iters, alpha);
+  var p2 = network_runC(d, p, iters, alpha);
+
+  return p2;
 
   }
   
