@@ -598,9 +598,11 @@ function network_predictC(xdata, model){
 
   //console.log("layer2");
   var l2 = matrix_multC(l1, w2, [0,1]);
+
+  var l2s = matrix_Sigmoid(l2);
   //console.log(l2.size);
 
-  return l2;
+  return l2s;
 
   }
 
@@ -614,7 +616,7 @@ function hotDecode(mat, wid){
   for (var i=0; i<m[0]; i++){
 
     var maxid=-1; 
-    var maxval=0; 
+    var maxval=0; // 
 
     for (var j=0; j<m[1]; j++){
 
