@@ -15,9 +15,9 @@ function param_init(x,y){
 
   p.w2 = matrix_init(p.layer[1][0], p.layer[1][1]);
 
-  matrix_random(p.w1);
+  matrix_random(p.w1, 0.2, -0.1);
 
-  matrix_random(p.w2);
+  matrix_random(p.w2, 0.2, -0.1);
 
   return p;
 
@@ -52,11 +52,11 @@ function matrix_init(a,b){
 
   }
 
-function matrix_random(m1){
+function matrix_random(m1, xscale=1, xoffset=0){
 
   var m = m1.size[0] * m1.size[1];
 
-  for (var i=0; i<m; i++){ m1.val[i] = Math.random();}
+  for (var i=0; i<m; i++){ m1.val[i] = Math.random() * xscale + xoffset;}
 
   }
 
@@ -505,7 +505,9 @@ function network_stepC(xdata, model){
   //console.log(l2.size);
 
   //console.log("resid");
-  var resid = matrix_sub(l2, targets); // l2 - targets;
+
+  var l2s = matrix_Sigmoid(l2);
+  var resid = matrix_sub(l2s, targets); // l2 - targets;
   //console.log(resid.size);
 
   var mse = matrix_squaremean(resid);
@@ -534,6 +536,29 @@ function network_stepC(xdata, model){
   return [w1_d, w2_d];
 
   }
+
+function elem_Sigmoid(x){
+  return 1.0 / (1.0 + Math.E ** -x);
+  }
+
+function matrix_Sigmoid(m1){  
+  var m2 = matrix_init(m1.size[0], m1.size[1]);
+  var nx = m1.size[0] * m1.size[1];
+  for (var k=0; k<nx; k++){
+    m2.val[k] = elem_Sigmoid(m1.val[k]);
+    }
+  return m2;
+  }
+
+function matrix_Poly(m1, a, c){  
+  var m2 = matrix_init(m1.size[0], m1.size[1]);
+  var nx = m1.size[0] * m1.size[1];
+  for (var k=0; k<nx; k++){
+    m2.val[k] = m1.val[k] * a + c;
+    }
+  return m2;
+  }
+
 
 
 function network_runC(data, p, iters, alpha){
