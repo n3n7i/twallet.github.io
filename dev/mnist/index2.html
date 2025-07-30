@@ -57,9 +57,9 @@ function square2vec(img){
 
   }
 
-function getDataset(){
+function getDataset(xoffset=0){
 
-  var mx=20;
+  var mx=5; //20;
   var my=10;
 
   rx = [];
@@ -67,7 +67,7 @@ function getDataset(){
   for (var i=0;i<mx;i++){
     for (var j=0;j<my;j++){
 
-      var ix = ImageSquares(i,j);
+      var ix = ImageSquares(i+xoffset,j);
       var tx = square2vec(ix);
 
       rx.push(tx);
@@ -93,9 +93,9 @@ var d = data_init([50, 784], [50, 10]);
 console.log(p, d);
 
 
-function copyData(){
+function copyData(xstep=0){
 
-  var r = getDataset();  
+  var r = getDataset(xstep);  
 
   var r2 = r.flat(); for (var i=0;i<39200;i++){ d.inp.val[i] = r2[i] / 255;} 
 
