@@ -129,8 +129,31 @@ function runTrainer2(iters, alpha){
   return p2;
   }
 
+var trainres;
+  
+function trainX(){
+  copyData();
+  var res = runTrainer(500, 1e-3);
+  console.log("Training Fin!");
+  trainres = res;
+  return res;
+  }
+
+function testX(i){
+  copyData(i*5);
+  var p1 = network_predictC(d, trainres);
+  var p2 = hotDecode(p1, []);
+  var acc=0;
+  for (var i=0;i<p2.length; i++){
+    acc+= (p2[i] == (i% 10));}
+  console.log(acc / 50); //
+  }
+  
   
 </script>
+
+  <input type="button" value="Run trainer" onclick="trainx()"></input><br>
+  <input type="button" value="Run predict" onclick="testx(1)"></input><br>
   
 </body>
 </html>
