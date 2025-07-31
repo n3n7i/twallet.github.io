@@ -28,7 +28,7 @@ ctx2.fillRect(0,0,28,28);
 ctx2.lineWidth = 2;
 ctx2.strokeStyle = "white";
 
-im4.addEventListener("mousedown", mouseEvent);
+im4.addEventListener("mousedown", mouseEvent2);
   
 //im3.crossOrigin = "anonymous";
 
@@ -48,7 +48,7 @@ function mouseEvent(e){
 
 function mouseEvent2(e){
 
-  ctx2.lineTo(e.clientX, e.clientY);
+  ctx2.lineTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
   ctx2.stroke();
   }
 
