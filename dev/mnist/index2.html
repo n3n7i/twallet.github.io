@@ -10,10 +10,19 @@
 var im = document.getElementById("im1");
 var im3 = document.createElement("canvas");
 
+var im4 = document.createElement("canvas");
+
 var ctx = im3.getContext("2d");
 
-document.body.appendChild(im3);
+var ctx2 = im3.getContext("2d");
 
+document.body.appendChild(im3);
+document.body.appendChild(im4);
+im4.width = 28;
+im4.height = 28;
+
+im4.addEventListener("mouseDown", mouseEvent);
+  
 //im3.crossOrigin = "anonymous";
 
 function imgCopy(){
@@ -147,13 +156,17 @@ function testX(i){
   for (var i=0;i<p2.length; i++){
     acc+= (p2[i] == (i% 10));}
   console.log(acc / 50); //
+  return acc / 50;
   }
   
   
 </script>
 
   <input type="button" value="Run trainer" onclick="trainX()"></input><br>
-  <input type="button" value="Run predict" onclick="testX(1)"></input><br>
+  Training set: <input type="button" value="Run predict" onclick="test0.innerText = testX(0);"></input><span id=test0></span><br>
+  Test1: <input type="button" value="Run predict" onclick="testX(1)"></input><br>
+  Test2: <input type="button" value="Run predict" onclick="testX(2)"></input><br>
+  Test3: <input type="button" value="Run predict" onclick="testX(3)"></input><br>
   
 </body>
 </html>
