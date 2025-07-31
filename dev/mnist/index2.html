@@ -28,7 +28,7 @@ ctx2.fillRect(0,0,28,28);
 ctx2.lineWidth = 2;
 ctx2.strokeStyle = "white";
 
-im4.addEventListener("mousedown", mouseEvent2);
+im4.addEventListener("mousemove", mouseEvent2);
   
 //im3.crossOrigin = "anonymous";
 
@@ -47,9 +47,11 @@ function mouseEvent(e){
   }
 
 function mouseEvent2(e){
-
-  ctx2.lineTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
-  ctx2.stroke();
+  if(e.button == 0) ctx2.moveTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
+  if(e.button == 1){
+    ctx2.lineTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
+    ctx2.stroke();
+    }
   }
 
   
