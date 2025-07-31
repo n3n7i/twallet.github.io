@@ -47,8 +47,9 @@ function mouseEvent(e){
   }
 
 function mouseEvent2(e){
-  if(e.button == 0) ctx2.moveTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
-  if(e.button == 1){
+  console.log(e);
+  if(e.buttons == 0) ctx2.moveTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
+  if(e.buttons == 1){
     ctx2.lineTo(e.clientX - im4.offsetLeft, e.clientY - im4.offsetTop);
     ctx2.stroke();
     }
