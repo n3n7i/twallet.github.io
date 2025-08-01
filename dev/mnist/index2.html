@@ -157,8 +157,9 @@ function copyData(xstep=0){
 
 function copyData2(){
 
-  var r = getUi;  
-  var r2 = r.flat(); for (var i=0;i<784;i++){ d2.inp.val[i] = r2[i] / 255;} 
+  var r = getUi();  
+  //var r2 = r.flat();
+  for (var i=0;i<784;i++){ d2.inp.val[i] = r2[i] / 255;} 
   }
 
   
