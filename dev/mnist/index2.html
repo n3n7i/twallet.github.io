@@ -140,7 +140,7 @@ function copyData(xstep=0){
 
   var r = getDataset(xstep);  
 
-  var r2 = r.flat(); for (var i=0;i<39200;i++){ d.inp.val[i] = r2[i] / 255;} 
+  var r2 = r.flat(); for (var i=0;i<39200;i++){ d.inp.val[i] = r[i] / 255;} 
 
   for (var i=0; i<500; i++){ d.targ.val[i] = 0};
 
