@@ -32,6 +32,11 @@ im4.addEventListener("mousemove", mouseEvent2);
   
 //im3.crossOrigin = "anonymous";
 
+function clearUinp(){
+  ctx2.fillStyle = "black";
+  ctx2.fillRect(0,0,28,28);
+  }
+  
 function imgCopy(){
   im3.width = im.width;
   im3.height = im.height;
@@ -63,6 +68,11 @@ function ImageSquares(i,j){
 
   return imgData;}
 
+function ImageSquare2Ui(){
+  var imgData = ctx2.getImageData(0,0,28,28);
+  return imgData;}
+
+  
 function px2Grey(r,g,b){
   return g*0.5 + r*0.3 + b*0.2;}
 
@@ -103,6 +113,12 @@ function getDataset(xoffset=0){
 
   return rx;
   }
+
+function getUi(){
+  var ix = ImageSquare2Ui();
+  var tx = square2vec(ix);
+  return tx;
+  }
   
 im3.addEventListener("click", mouseEvent);
 
@@ -116,8 +132,9 @@ var p = param_init([784, 75], [75, 10]);
 
 var d = data_init([50, 784], [50, 10]);
 
+var d2 = data_init([1, 784], [50, 10]);
+  
 console.log(p, d);
-
 
 function copyData(xstep=0){
 
@@ -138,7 +155,13 @@ function copyData(xstep=0){
 
   }
 
+function copyData2(){
 
+  var r = getUi;  
+  var r2 = r.flat(); for (var i=0;i<784;i++){ d2.inp.val[i] = r2[i] / 255;} 
+  }
+
+  
 function runTrainer(iters, alpha){
 
   var p = param_init([784, 75], [75, 10]); // reset params ()
@@ -175,7 +198,14 @@ function testX(i){
   console.log(acc / 50); //
   return acc / 50;
   }
-  
+
+
+function testXUi(){
+  copyData2();
+  var p1 = network_predictC(d2, trainres);
+  var p2 = hotDecode(p1, []);
+  return p2[0];
+  }
   
 </script>
 
@@ -184,6 +214,9 @@ function testX(i){
   Test1: <input type="button" value="Run predict" onclick="test0.innerText = testX(1)"></input><br>
   Test2: <input type="button" value="Run predict" onclick="test0.innerText = testX(2)"></input><br>
   Test3: <input type="button" value="Run predict" onclick="test0.innerText = testX(3)"></input><br>
+
+  Clear ui: <input type="button" value="reset" onclick="test0.innerText = testX(3)"></input><br>
+  Guess ui: <input type="button" value="Run predict" onclick="test1.innerText = testXUi()"></input>Guess: </input><span id=test1></span><br>
   
 </body>
 </html>
