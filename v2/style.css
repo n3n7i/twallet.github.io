@@ -1,0 +1,130 @@
+
+  body{ padding: 5px 5px; margin: 0px; background-color: #0f0a0a; color: #f47352;} 
+
+  div.pad{
+    text-align: center;
+    display: block;
+    height: 40px;
+    border:1px solid #F66;
+//    margin:;
+    padding:auto;
+    }
+
+  .headcolor{
+    background-color: #033;
+    color: #099; }
+
+  ul { padding:0px; 
+      //display:block;
+      background-color: #333;
+      position: fixed;
+      min-width: 400px;
+      }
+
+  li{
+    display:inline;
+    padding: 10px 20px;
+    }
+
+  li:hover{
+    background-color: #222;
+    border-radius: 10px;}
+
+  .drop{
+    display:none;
+    position:relative;
+    }
+
+  li:hover .drop{
+    display:block;
+    position:absolute;
+    }
+
+  ul.submenu li{
+    display:block;
+    background-color: #333;}
+
+  ul.submenu li.disable:hover{
+    background-color: #555;}
+
+  ul.submenu li:hover{
+    background-color: #222;}
+
+  div.block{
+    display: inline-block;
+    border:1px solid #d36135;
+    padding:20px;
+    margin:10px;
+    margin-bottom: auto;
+    min-width:250px;
+    }
+
+  .float_R{
+    float: right;
+    max-height:500px;
+    overflow-y: scroll;
+    min-width:500px;
+   }
+
+  .float_R2{
+    float: right;
+    color: #f9cb40;
+    background-color: #000;
+    border: 0px;
+    }
+
+  option{
+    color: #00FF00;
+    background-color: #000;
+  }
+
+  div.hide{
+    display:none;
+    }
+
+  div.hide.vis{
+
+    display:block;
+    position:absolute;
+
+    left:20%;
+    top:100px;
+
+    background-color: #000;
+    border: 2px solid #f9cb40;
+
+    min-width:60%;
+    min-height:200px;
+
+    }
+
+  img.icon{
+
+    display: inline-block;
+    width:50px;
+    height:50px;
+    }
+
+
+  img.icon2{
+
+    display: inline-block;
+    width:32px;
+    height:32px;
+    }
+
+
+  .buttons{
+
+    display: inline-block;
+    float: right;
+    }
+
+  .inline{
+    display: inline-block;}
+
+  input.hide{
+    display:none;
+    }
+
+
