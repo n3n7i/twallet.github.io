@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/@solana/web3.js/lib/index.iife.js"></script>
+<script src="https://bundle.run/buffer@6.0.3"></script>
+
+</head>
+<body onload="setVal();">
+
+<div class=pad>
+
+<ul class="main"><li>File <div class=drop>
+  <ul class="submenu">
+    <li id=new>New</li>
+    <li id=open><input type="file" id="fileInp"></input>Open</li>
+  </div></li>
+
+  <li>View <div class="drop">
+  <ul class="submenu" style="left:2%;">
+    <li id=bal>Balance</li>
+    <li id=tok>Tokens</li>
+    <li id=tokj>Tokens price(Jup)</li>
+    <li id=tokd>Tokens display(Jup)</li>
+    <li id=geckoII>solanaVal</li>
+  </ul>
+</div></li>
+<li>Msg <div class="drop">
+  <ul class="submenu" style="left:4%;">
+    <li id=send>Transfer with memo</li>
+  </ul>
+</div></li>
+
+<li>Convert <div class="drop">
+  <ul class="submenu" style="left:6%;">
+    <li id=s2u>Sol to usd</li>
+    <li id=u2s>usd to Sol</li>
+    <li id=rMa>microAccount rent</li>
+    <li id=rMb>microAccount rent II</li>
+    <li id=rMc>microAccount rent III</li>
+  </ul>
+</div></li>
+
+<li>Extra <div class="drop">
+  <ul class="submenu" style="left:8%;">
+    <li id=newX>Create Acc</li>
+    <li id=burnX class=disable>Burn Tokens</li>
+    <li id=closeX>Close Acc</li>
+    <li id=closeZ>Nested Account Recovery</li>
+    <li id=viewX>Pubkey viewer</li>
+    <li id=nestX class=disable>nested transfer</li>
+    <li id=nestZ>Create hidden Account</li>
+  </ul>
+</div></li>
+
+<li>Extra II <div class="drop">
+  <ul class="submenu" style="left:10%;">
+    <li id=appX>Approve</li>
+    <li id=revX>Revoke</li>
+    <li id=authX>SetAuth Mint</li>
+    <li id=authY>SetAuth Account</li>
+  </ul>
+</div></li>
+
+
+
+<li>token22 <div class="drop">
+  <ul class="submenu" style="left:25%;">
+    <li id=prog1> use token1 key</li>
+    <li id=prog22> use token22 key</li>
+  </ul>
+</div></li>
+
+</ul>
+
+<select id=Currency_sel class=float_R2 oninput="setVal(this);" disabled>
+<option> gbp</option>
+<option> eur</option>
+<option selected> usd</option>
+<option> cad</option>
+<option> aud</option>
+<option> nzd</option>
+<option> cny</option>
+<option> inr</option>
+<option> rub</option>
+<option> jpy</option>
+<option> sats</option>
+</select>
+
+</div><br>
+
+<div id=pubkey class=block>
+Key data:
+</div>
+<br>
+<div id=main class=block>
+Token data:
+</div>
+
+<div id=xcons class="block float_R">
+Log data:
+</div><br>
+
+<div id=xsend class=block>
+Transfer data:
+</div>
+
+
+<div id=popup4 class="block float_R hide vis">
+<input type=button class="block float_R2" value=X onclick='popup4.classList.toggle("vis");'></input>
+
+<div class="block">Actions:<select oninput="setMode(this);">
+<option>Send </option>
+<option>Swap </option>
+<option>Burn </option>
+<option>Close </option>
+</select>
+</div>
+
+<div class="block float_R">
+Token Info<br>
+Mint: <span id=tk_inf_mint> xxx</span><br>
+Amount: <span id=tk_inf_amount> xxx</span><br>
+</div>
+
+<br>
+
+
+<div class="block hide" id=tok_Send>
+Send:<br>
+<table><tr><td>Addr:</td><td> <input type=text id=tk_Addr> </input></td></tr>
+<tr><td> Amount: </td><td> <Input type=text id=tk_Am1> </input> <input type=button value=max onclick=setMax('Send');></input> </td></tr></table>
+<input type=button value="Ok" onclick='getSend();'></input><br>
+</div>
+
+<div class="block hide" id=tok_Swap>
+Swap:<br>
+<table><tr><td>Pair: </td><td>
+<select id=tok_Pair> 
+<option>Sol</option>
+<option>USDC</option>
+<option>USDT</option>
+</select> </td></tr>
+
+<tr><td> Amount A: </td><td> <Input type=text id=tk_Am2a> </input> <input type=button value=max onclick=setMax('SwapA');></input><br> </td></tr>
+<tr><td> Amount B: </td><td> <Input type=text id=tk_Am2b> </input> <input type=button value=max></input><br> </td></tr> </table>
+<input type=button value="Buy" onclick='getSwapB()'></input> <input type=button value="Sell" onclick='getSwapA()'></input><br>
+</div>
+
+<div class="block hide" id=tok_Burn>
+Burn:<br>
+Amount: <Input type=text id=tk_Am3> </input>  <input type=button value=max onclick=setMax('Burn');></input> <br>
+<input type=button value="Ok" onclick='getBurn();'>></input><br>
+</div>
+
+<div class="block hide" id=tok_Close>
+Close Acc<br>
+<input type=button value="Ok" onclick='getClose();'>></input><br>
+</div>
+
+<div class="block float_R">
+Quote Info<br>
+<span id=tk_quoteData> xxx</span>
+</div>
+
+<div class=block id=tok_tx>
+txData:
+</div>
+
+test popup 4!</div>
+
+
+<script src="wallet.js"></script>
+<script src="menu.js"></script>
+
+<script src="instructions.js"></script>
+<script src="token.js"></script>
+<script src="jupMarket.js"></script>
+<script src="tab.js"></script>
+
+<script src="accessPoint.js"></script>
+
+
+<script src="mixedKey.js"></script>
+<script src="fetchMeta.js"></script>
+<script src="fetchMeta2.js"></script>
+<script src="genMint.js"></script>
+
+<script src="setAuth.js"></script>
+<script src="tinyMarket.js"></script>
+<script src="txhist.js"></script>
+<script src="account.js"></script>
+
+<script src="solpay.js"></script>
+<script src="snap.js"></script>
+
+
+<script src="xplot.js"></script>
+<script src="v0memo.js"></script>
+<script src="trade_hist.js"></script>
+
+</body>
+</html>
