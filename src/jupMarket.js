@@ -65,7 +65,7 @@ async function dataInit_jup(extra = false){ //t1, t2, am){
 
     rx = JM_addr2;
 
-  fetch(rx, {headers:{accept: 'application/json', x-api-key: jp_AK}}).then((resp) => resp.json()).then((data) => {
+  fetch(rx, {headers:{accept: 'application/json', 'x-api-key': jp_AK}}).then((resp) => resp.json()).then((data) => {
 
 	//res3 = data; 
 	jupstrict = data;
@@ -218,7 +218,7 @@ async function dataReq_jup_price_X(sym){
 
   var str1 = JM_price + sym;
 
-  fetch(str1, {headers:{accept: 'application/json', x-api-key: jp_AK}}).then((resp) => resp.json()).then((data) => {
+  fetch(str1, {headers:{accept: 'application/json', 'x-api-key': jp_AK}}).then((resp) => resp.json()).then((data) => {
   
   //if (tickRes.length==0)
 
@@ -264,7 +264,7 @@ async function dataReq_jup_prices(){
 
     }
 
-  fetch(str1 + xstr2, {headers:{accept: 'application/json', x-api-key: jp_AK}}).then((resp) => resp.json()).then((data) => {
+  fetch(str1 + xstr2, {headers:{accept: 'application/json', 'x-api-key': jp_AK}}).then((resp) => resp.json()).then((data) => {
 
     xcons.log("prices fetched");
 
