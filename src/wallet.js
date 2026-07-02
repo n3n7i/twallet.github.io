@@ -30,6 +30,10 @@ var mintRead=0;
 
 var dispToken = false;
 
+var jupstrict = [];
+var wallet_Tok = [];
+
+
 function Esc(x){
   //console.log(x);
   if (x.key == "Escape"){
