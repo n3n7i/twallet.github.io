@@ -1108,7 +1108,7 @@ function saveData2(xdata, label){
 
 // displayTokens //
 
-var wallet_Tok;
+//var wallet_Tok;
 
 function token(id, amount, dec){
   this.id = id;
