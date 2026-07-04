@@ -1,4 +1,20 @@
 
+//var i1 = setInterval(function (){console.log(' interval ok')}, 2500);
+// clearInterval(i1);
+
+var ad_wall_Inps = [];
+
+var ad_wall_main = [];
+var ad_wall_tok = [];
+
+
+function ad_setwalletlist(x){
+  ad_wallet_Inps = x.split(',');
+  }
+
+//function ad_sort{} ?
+
+
 async function ad_tokenTransferInst_2(s, d, o, amount, dec, defLamp=500, xmode=true, tx2=null){
 
     // 1. Create Solana Transaction
