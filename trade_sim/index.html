@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css"></head>
+    
+<body>
+
+<h1> trade Simulator v0.1 </h1><br>
+
+<div class=right> menu:? 
+<br>
+<br>
+<a id='m_init' onclick='xHandler(this)'>Init starter wallet </a><br><br>
+<a id='m_load' onclick='xHandler(this)'>Load saved wallet  </a><br><br>
+<a id='m_save' onclick='xHandler(this)'>Save changes  </a><br><br>
+</div>
+
+<div id=output1>out:</div>
+<div id=setup1 style="border:1px dashed #000; display:inline-block; margin:10px 5px;">setup:</div>
+<div id=input1>input: <input type=button onclick='draw_coinEntry()' value="show"></input></div>
+
+<script src="script.js"></script>
+<script src="liveData.js"></script>
+
+<script id='tokendata-extra' src="./tokens_jupv6.json" type="application/json"></script>
+
+</body>
+<html>

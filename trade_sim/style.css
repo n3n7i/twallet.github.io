@@ -1,0 +1,42 @@
+
+.right{
+
+  display: inline-block;
+  float: right;
+  height: 25px;
+  border: 1px dashed #000;
+  overflow: hidden;
+  }
+  
+.right:hover{
+  height: auto;
+  border: 1px solid #000;
+  }
+  
+
+a:hover{
+
+  color: #060;
+  background: #ccc;
+  }
+
+
+body {
+            /* Specify the path to your image */
+            background-image: url('./bgtest3.png'); 
+            
+            /* Prevent the image from repeating like a tile grid */
+            background-repeat: no-repeat; 
+            
+            /* Scale the image to perfectly cover the entire screen */
+            background-size: cover; 
+            
+            /* Center the background image horizontally and vertically */
+            background-position: center; 
+            
+            /* Keep the background fixed in place while scrolling */
+            background-attachment: fixed; 
+            
+            /* Fallback color if the image fails to load */
+            background-color: #f4f4f4; 
+        }
