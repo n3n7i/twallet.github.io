@@ -9,3 +9,7 @@ mobile dev test  https://n3n7i.github.io/twallet.github.io/dev/mock5.html
 
 Basic pure Eth wallet
 https://n3n7i.github.io/twallet.github.io/eth/
+
+
+(New!) Trade sim
+https://n3n7i.github.io/twallet.github.io/trade_sim/
