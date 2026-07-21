@@ -189,8 +189,8 @@ function draw_coinEntry(){
 function addEntry(){
   var c_cn = cn.value;
   var c_ca = ca.value;
-  var c_cq = Number(cq.value) | 0;
-  var c_cp = Number(cx.value) | 0;
+  var c_cq = Number(cq.value) || 0; //!
+  var c_cp = Number(cx.value) || 0;
 
   if(c_ca.length > 24){
     autoTrader.coinlist.push(c_cn);
@@ -217,7 +217,7 @@ async function xHandler(x){
   if (x.id=="c_done") draw_coinEntry_cl();
   if (x.id=="c_show") draw_coinEntry();
 
-  if (x.id=="c_add") addEntry();
+  if (x.id=="c_add") { addEntry(); drawTable(); }
 
   if (x.id=="c_buy") simTrade("buy");
   if (x.id=="c_sell") simTrade("sell");
