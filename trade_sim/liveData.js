@@ -25,7 +25,9 @@ async function getData(x) {
 
     const data = await response.json(); // Parses response body as JSON
     console.log(data);
-    return await data;
+    if (data.hasOwnProperty(x)){
+      return await data;
+      }
     
   } catch (error) {
     console.log('Network or parsing error:', error);
@@ -34,6 +36,12 @@ async function getData(x) {
     console.log(res);
     return res; //?
   }
+
+    console.log("coin not recognized // other err?");
+    var res = {};
+    res[x] = {usd: 0};
+    console.log(res);
+    return res; //?
 }
 
 //getData(gecko3);

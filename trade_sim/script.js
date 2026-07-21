@@ -189,7 +189,7 @@ function draw_coinEntry(){
 function addEntry(){
   var c_cn = cn.value;
   var c_ca = ca.value;
-  var c_cq = Number(cq.value) | 0;
+  var c_cq = Number(cq.value) | 0; //!
   var c_cp = Number(cx.value) | 0;
 
   if(c_ca.length > 24){
