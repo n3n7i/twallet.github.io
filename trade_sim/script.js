@@ -65,6 +65,7 @@ function fresh_display(){
 
   drawTable();
   setup1.innerHTML = drawCombo('ct1') + buySell_buttons() + "<br> Trade with: " + drawCombo('ct2');
+  drawChart_select();
   }
 
 
@@ -217,7 +218,7 @@ async function xHandler(x){
   if (x.id=="c_done") draw_coinEntry_cl();
   if (x.id=="c_show") draw_coinEntry();
 
-  if (x.id=="c_add") { addEntry(); drawTable(); }
+  if (x.id=="c_add") {addEntry(); drawTable();}
 
   if (x.id=="c_buy") simTrade("buy");
   if (x.id=="c_sell") simTrade("sell");
@@ -228,7 +229,13 @@ async function xHandler(x){
   if (x.id=="m_init") init_starterWallet();
   if (x.id=="m_load"){ load_Wallet(); refresh_Prices();}
   if (x.id=="m_save") put_aT();
-
+  
+  if (x.id=="ch_day"){ fetchchart_draw(autoTrader.coin_contract[coinchart.selectedIndex], 1); }
+  if (x.id=="ch_day7"){ fetchchart_draw(autoTrader.coin_contract[coinchart.selectedIndex], 7); }
+  if (x.id=="ch_day30"){ fetchchart_draw(autoTrader.coin_contract[coinchart.selectedIndex], 30); }
+  if (x.id=="ch_day90"){ fetchchart_draw(autoTrader.coin_contract[coinchart.selectedIndex], 90); }
+  if (x.id=="ch_day365"){ fetchchart_draw(autoTrader.coin_contract[coinchart.selectedIndex], 365); }
+  
   }
  
 
@@ -364,3 +371,16 @@ function showAmount(){
   }
 
   
+  
+function drawChart_select(){
+
+  var dc_str = "<br> Chart select: "+ drawCombo('coinchart') + "<br>";
+  
+  dc_str += drawInputs_B("day", 'ch_day') + drawInputs_B("7 days", 'ch_day7') + drawInputs_B("30 days", 'ch_day30');
+  
+  dc_str += drawInputs_B("90 days", 'ch_day90') + drawInputs_B("365 days", 'ch_day365');
+  
+  chartsel.innerHTML = dc_str;
+
+}  
+
